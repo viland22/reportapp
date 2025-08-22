@@ -8,6 +8,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\LogController;
+use App\Http\Controllers\PlanningController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -38,6 +39,13 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/department/delete/{id}', [DepartmentController::class, 'destroy'])->name('page.department.destroy')->middleware('role:admin');
     Route::get('/department/create', [DepartmentController::class, 'create'])->name('page.department.create')->middleware('role:admin');
     Route::post('/department/store', [DepartmentController::class, 'store'])->name('page.department.store')->middleware('role:admin');
+
+    Route::get('/planning', [PlanningController::class, 'index'])->name('page.planning.index')->middleware('role:admin,ppic');
+    Route::get('/planning/edit/{id}', [PlanningController::class, 'edit'])->name('page.planning.edit')->middleware('role:admin,ppic');
+    Route::put('/planning/update/{id}', [PlanningController::class, 'update'])->name('page.planning.update')->middleware('role:admin,ppic');
+    Route::delete('/planning/delete/{id}', [PlanningController::class, 'destroy'])->name('page.planning.destroy')->middleware('role:admin,ppic');
+    Route::get('/planning/create', [PlanningController::class, 'create'])->name('page.planning.create')->middleware('role:admin,ppic');
+    Route::post('/planning/store', [PlanningController::class, 'store'])->name('page.planning.store')->middleware('role:admin,ppic');
 
     Route::get('/log', [LogController::class, 'index'])->name('page.log.index')->middleware('role:admin');
 });

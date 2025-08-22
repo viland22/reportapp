@@ -13,4 +13,9 @@ class Department extends Model
         'initial',
         'name',
     ];
+
+    public function activity()
+    {
+        return $this->hasMany(Activity::class, 'Department', 'id');
+    }
 }

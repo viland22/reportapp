@@ -40,6 +40,9 @@
     <link href="{{ asset('vendor/css/pages/page-auth.css?v=At_2ncOU_jlMA7mMS1RmzRT-tTCP6KzMBMenp8yEmNs') }}"
         rel="stylesheet">
     <link href="{{ asset('vendor/css/buttons.dataTables.css') }}" rel="stylesheet">
+    <link href="{{ asset('vendor/css/flatpickr.min.css') }}" rel="stylesheet">
+
+
 
     {{-- <link href="{{ asset('vendor/fonts/fontawesome.css') }}" rel="stylesheet"> --}}
 
@@ -95,6 +98,7 @@
     <script src="{{ asset('vendor/libs/sweetalert2/sweetalert2.js') }}"></script>
     <script src="{{ asset('vendor/libs/bootstrap-select/bootstrap-select.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
+    <script src="{{ asset('vendor/js/flatpickr.js') }}"></script>
     {{-- <script src="{{ asset('vendor/js/buttons.dataTables.js') }}"></script> --}}
     {{-- <script src="{{ asset('vendor/js/datatables.buttons.js') }}"></script>
     <script src="{{ asset('vendor/js/jszip.min.js') }}"></script>
