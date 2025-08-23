@@ -23,17 +23,17 @@ class Activity extends Model
         'ActualStart',
         'ActualFinish',
         'ActivityStatus',
-        'Department',
+        'department_id',
+        'wo_number_id',
         'Remarks',
-        'WoNumber',
     ];
 
     public function department()
     {
-        return $this->belongsTo(Department::class, 'Department', 'id');
+        return $this->belongsTo(Department::class, 'department_id', 'id');
     }
-    public function wonumber()
+    public function wo_number()
     {
-        return $this->belongsTo(WoNumber::class, 'WoNumber', 'id');
+        return $this->belongsTo(Wo_Number::class, 'wo_number_id', 'id');
     }
 }

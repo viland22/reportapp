@@ -17,12 +17,12 @@ class WonoSeeder extends Seeder
 
         for ($i = 1; $i <= 999; $i++) {
             $data[] = [
-                'wonumber' => 'WO2025' . str_pad($i, 3, '0', STR_PAD_LEFT),
+                'wo_number' => 'WO2025' . str_pad($i, 3, '0', STR_PAD_LEFT),
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
         }
 
-        DB::table('wonumbers')->insert($data);
+        DB::table('wo_numbers')->insert($data);
     }
 }

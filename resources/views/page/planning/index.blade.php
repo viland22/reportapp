@@ -31,12 +31,12 @@
                         <th>Activity Id</th>
                         <th>Activity Name</th>
                         <th>Wo Number</th>
-                        <th>BL Duration</th>
-                        {{-- <th>Actual Duration</th> --}}
                         <th>BL Project Start</th>
                         <th>BL Project Finish</th>
+                        <th>BL Duration</th>
                         {{-- <th>Actual Start</th>
-                        <th>Actual Finish</th> --}}
+                        <th>Actual Finish</th>
+                        <th>Actual Duration</th> --}}
                         <th>Department</th>
                         {{-- <th>Remarks</th> --}}
                     </tr>
@@ -45,11 +45,12 @@
                     @foreach ($data as $index => $planning)
                         <tr>
                             <td>
-                                <a href="{{ route('page.planning.edit', $planning->id) }}"
-                                    class="btn btn-sm btn-warning" title="Edit Planning"><i
-                                        class="icon-base bx bx-edit icon-sm"></i></a>
-                                <form class="form-delete" action="{{ route('page.planning.destroy', $planning->id) }}"
-                                    method="POST" style="display:inline;">
+                                <a href="{{ route('page.planning.edit', $planning->id) }}" class="btn btn-sm btn-warning"
+                                    title="Edit Planning"><i class="icon-base bx bx-edit icon-sm"></i></a>
+                                <form class="form-delete"
+                                    data-activity="{{ $planning->ActivityName }}"
+                                    action="{{ route('page.planning.destroy', $planning->id) }}" method="POST"
+                                    style="display:inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-danger" title="Delete Planning"><i
@@ -58,14 +59,15 @@
                             </td>
                             <td>{{ $planning->ActivityId }}</td>
                             <td>{{ $planning->ActivityName }}</td>
-                            <td>{{ $planning->WoNumber }}</td>
-                            <td>{{ $planning->BLDuration }}</td>
-                            {{-- <td>{{ $planning->ActualDuration }}</td> --}}
+                            <td>{{ $planning->wo_number->wo_number ?? '-' }}</td>
                             <td>{{ $planning->BLProjectStart }}</td>
                             <td>{{ $planning->BLProjectFinish }}</td>
+                            <td>{{ $planning->BLDuration }}</td>
                             {{-- <td>{{ $planning->ActualStart }}</td>
-                            <td>{{ $planning->ActualFinish }}</td> --}}
-                            <td>{{ $planning->Department }}</td>
+                            <td>{{ $planning->ActualFinish }}</td>
+                            <td>{{ $planning->ActualDuration }}</td> --}}
+                            <td>{{ $planning->department->initial ?? '-' }} - {{ $planning->department->name ?? '-' }}
+                            </td>
                             {{-- <td>{{ $planning->remarks }}</td> --}}
                         </tr>
                     @endforeach
@@ -113,7 +115,7 @@
                     language: {
                         sLengthMenu: "_MENU_",
                         search: "",
-                        searchPlaceholder: "Search Log"
+                        searchPlaceholder: "Search ..."
                     },
                     buttons: [{
                         extend: 'excelHtml5',
@@ -138,5 +140,27 @@
                 }, 300)
 
         }
+
+        document.querySelectorAll('.form-delete').forEach(function(form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                let activityName = form.dataset.activity;
+
+                Swal.fire({
+                    title: 'Delete planning data?',
+                    text: `Data "${activityName}" will be removed from the list`,
+                    icon: 'question',
+                    theme: 'dark',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
     </script>
 @endpush

@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Department extends Model
 {
     use HasFactory, SoftDeletes;
+
+    protected $table = 'departments';
     protected $fillable = [
         'initial',
         'name',
@@ -16,6 +18,6 @@ class Department extends Model
 
     public function activity()
     {
-        return $this->hasMany(Activity::class, 'Department', 'id');
+        return $this->hasMany(Activity::class, 'department_id', 'id');
     }
 }

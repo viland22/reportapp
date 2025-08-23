@@ -98,7 +98,7 @@
                     language: {
                         sLengthMenu: "_MENU_",
                         search: "",
-                        searchPlaceholder: "Search Log"
+                        searchPlaceholder: "Search ..."
                     },
                     buttons: [{
                         extend: 'excelHtml5',

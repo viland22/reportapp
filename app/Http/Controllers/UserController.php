@@ -14,7 +14,7 @@ class UserController extends Controller
     public function index()
     {
         $userall = User::with('role')->get();
-        Log::info($userall);
+        //Log::info($userall);
         return view('page.user.index', compact('userall'));
     }
 
