@@ -52,6 +52,7 @@
     <script src="{{ asset('vendor/js/helpers.js') }}"></script>
     <script src="{{ asset('vendor/js/template-customizer.js') }}"></script>
     <script src="{{ asset('js/config.js') }}"></script>
+    <script src="{{ asset('js/forms-selects.js') }}"></script>
 </head>
 
 <body>

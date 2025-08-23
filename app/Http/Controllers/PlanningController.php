@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activity;
+use App\Models\Department;
+use App\Models\WoNumber;
 use Illuminate\Http\Request;
 
 class PlanningController extends Controller
@@ -21,7 +23,9 @@ class PlanningController extends Controller
      */
     public function create()
     {
-        return view('page.planning.create');
+        $departments = Department::all();
+        $wonumbers = WoNumber::all();
+        return view('page.planning.create', compact('departments', 'wonumbers'));
     }
 
     /**

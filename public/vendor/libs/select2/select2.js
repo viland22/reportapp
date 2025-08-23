@@ -1,4 +1,3 @@
-/*! For license information please see select2.js.LICENSE.txt */
 !function(e, t) {
     if ("object" == typeof exports && "object" == typeof module)
         module.exports = t(require("jQuery"));
@@ -76,10 +75,15 @@
                                 }
                                 function y(e) {
                                     return function(t) {
-                                        l[e] = t
+                                        return m(t, e)
                                     }
                                 }
                                 function _(e) {
+                                    return function(t) {
+                                        l[e] = t
+                                    }
+                                }
+                                function w(e) {
                                     if (g(c, e)) {
                                         var t = c[e];
                                         delete c[e],
@@ -90,35 +94,31 @@
                                         throw new Error("No " + e);
                                     return l[e]
                                 }
-                                function w(e) {
+                                function $(e) {
                                     var t, n = e ? e.indexOf("!") : -1;
                                     return n > -1 && (t = e.substring(0, n),
                                     e = e.substring(n + 1, e.length)),
                                     [t, e]
                                 }
                                 function b(e) {
-                                    return e ? w(e) : []
+                                    return e ? $(e) : []
                                 }
-                                function $(e) {
+                                function x(e) {
                                     return function() {
                                         return u && u.config && u.config[e] || {}
                                     }
                                 }
                                 s = function(e, t) {
-                                    var n, i, r = w(e), o = r[0], s = t[1];
-                                    return e = r[1],
-                                    o && (n = _(o = m(o, s))),
-                                    o ? e = n && n.normalize ? n.normalize(e, (i = s,
-                                    function(e) {
-                                        return m(e, i)
-                                    }
-                                    )) : m(e, s) : (o = (r = w(e = m(e, s)))[0],
-                                    e = r[1],
-                                    o && (n = _(o))),
+                                    var n, i = $(e), r = i[0], o = t[1];
+                                    return e = i[1],
+                                    r && (n = w(r = m(r, o))),
+                                    r ? e = n && n.normalize ? n.normalize(e, y(o)) : m(e, o) : (r = (i = $(e = m(e, o)))[0],
+                                    e = i[1],
+                                    r && (n = w(r))),
                                     {
-                                        f: o ? o + "!" + e : e,
+                                        f: r ? r + "!" + e : e,
                                         n: e,
-                                        pr: o,
+                                        pr: r,
                                         p: n
                                     }
                                 }
@@ -136,40 +136,40 @@
                                             id: e,
                                             uri: "",
                                             exports: l[e],
-                                            config: $(e)
+                                            config: x(e)
                                         }
                                     }
                                 },
                                 r = function(e, t, i, r) {
-                                    var o, u, p, h, f, m, w, $ = [], A = typeof i;
+                                    var o, u, p, h, f, m, y, $ = [], x = typeof i;
                                     if (m = b(r = r || e),
-                                    "undefined" === A || "function" === A) {
+                                    "undefined" === x || "function" === x) {
                                         for (t = !t.length && i.length ? ["require", "exports", "module"] : t,
                                         f = 0; f < t.length; f += 1)
                                             if ("require" === (u = (h = s(t[f], m)).f))
                                                 $[f] = a.require(e);
                                             else if ("exports" === u)
                                                 $[f] = a.exports(e),
-                                                w = !0;
+                                                y = !0;
                                             else if ("module" === u)
                                                 o = $[f] = a.module(e);
                                             else if (g(l, u) || g(c, u) || g(d, u))
-                                                $[f] = _(u);
+                                                $[f] = w(u);
                                             else {
                                                 if (!h.p)
                                                     throw new Error(e + " missing " + u);
-                                                h.p.load(h.n, v(r, !0), y(u), {}),
+                                                h.p.load(h.n, v(r, !0), _(u), {}),
                                                 $[f] = l[u]
                                             }
                                         p = i ? i.apply(l[e], $) : void 0,
-                                        e && (o && o.exports !== n && o.exports !== l[e] ? l[e] = o.exports : p === n && w || (l[e] = p))
+                                        e && (o && o.exports !== n && o.exports !== l[e] ? l[e] = o.exports : p === n && y || (l[e] = p))
                                     } else
                                         e && (l[e] = i)
                                 }
                                 ,
                                 e = t = o = function(e, t, i, l, c) {
                                     if ("string" == typeof e)
-                                        return a[e] ? a[e](t) : _(s(e, b(t)).f);
+                                        return a[e] ? a[e](t) : w(s(e, b(t)).f);
                                     if (!e.splice) {
                                         if ((u = e).deps && o(u.deps, u.callback),
                                         !t)
@@ -213,7 +213,7 @@
                         )),
                         n.define("jquery", [], (function() {
                             var e = t || $;
-                            return null == e && console && console.error && console.error("Select2: An instance of jQuery or a jQuery-compatible library was not found. Make sure that you are including jQuery before Select2 on your web page."),
+                            return null == e && console && console.error,
                             e
                         }
                         )),
@@ -250,16 +250,16 @@
                                     r = t.prototype.constructor),
                                     r.apply(this, arguments)
                                 }
-                                t.displayName = e.displayName,
-                                o.prototype = new function() {
+                                function s() {
                                     this.constructor = o
                                 }
-                                ;
-                                for (var s = 0; s < r.length; s++) {
-                                    var a = r[s];
-                                    o.prototype[a] = e.prototype[a]
+                                t.displayName = e.displayName,
+                                o.prototype = new s;
+                                for (var a = 0; a < r.length; a++) {
+                                    var l = r[a];
+                                    o.prototype[l] = e.prototype[l]
                                 }
-                                for (var l = function(e) {
+                                for (var c = function(e) {
                                     var n = function() {};
                                     e in o.prototype && (n = o.prototype[e]);
                                     var i = t.prototype[e];
@@ -267,9 +267,9 @@
                                         return Array.prototype.unshift.call(arguments, n),
                                         i.apply(this, arguments)
                                     }
-                                }, c = 0; c < i.length; c++) {
-                                    var u = i[c];
-                                    o.prototype[u] = l(u)
+                                }, u = 0; u < i.length; u++) {
+                                    var d = i[u];
+                                    o.prototype[d] = c(d)
                                 }
                                 return o
                             }
@@ -1007,7 +1007,7 @@
                             return i.prototype.bind = function(e, t, n) {
                                 var i = this;
                                 e.call(this, t, n),
-                                null == this.placeholder && this.options.get("debug") && window.console && console.error && console.error("Select2: The `allowClear` option should be used in combination with the `placeholder` option."),
+                                null == this.placeholder && this.options.get("debug") && window.console && console.error,
                                 this.$selection.on("mousedown", ".select2-selection__clear", (function(e) {
                                     i._handleClear(e)
                                 }
@@ -1192,7 +1192,7 @@
                             ,
                             i.prototype.resizeSearch = function() {
                                 this.$search.css("width", "25px");
-                                var e;
+                                var e = "";
                                 e = "" !== this.$search.attr("placeholder") ? this.$selection.find(".select2-selection__rendered").width() : .75 * (this.$search.val().length + 1) + "em",
                                 this.$search.css("width", e)
                             }
@@ -2278,15 +2278,16 @@
                                     id: e,
                                     text: e
                                 });
+                                var t = {
+                                    selected: !1,
+                                    disabled: !1
+                                };
                                 return null != (e = n.extend({}, {
                                     text: ""
                                 }, e)).id && (e.id = e.id.toString()),
                                 null != e.text && (e.text = e.text.toString()),
                                 null == e._resultId && e.id && null != this.container && (e._resultId = this.generateResultId(this.container, e)),
-                                n.extend({}, {
-                                    selected: !1,
-                                    disabled: !1
-                                }, e)
+                                n.extend({}, t, e)
                             }
                             ,
                             i.prototype.matches = function(e, t) {
@@ -2391,7 +2392,7 @@
                                 function o() {
                                     var o = r.transport(r, (function(r) {
                                         var o = i.processResults(r, e);
-                                        i.options.get("debug") && window.console && console.error && (o && o.results && n.isArray(o.results) || console.error("Select2: The AJAX results did not return an array in the `results` key of the response.")),
+                                        i.options.get("debug") && window.console && console.error && (!o || !o.results || n.isArray(o.results)),
                                         t(o)
                                     }
                                     ), (function() {
@@ -2429,16 +2430,15 @@
                             }
                             return t.prototype.query = function(e, t, n) {
                                 var i = this;
-                                this._removeOldTags(),
-                                null != t.term && null == t.page ? e.call(this, t, (function e(r, o) {
-                                    for (var s = r.results, a = 0; a < s.length; a++) {
+                                function r(e, o) {
+                                    for (var s = e.results, a = 0; a < s.length; a++) {
                                         var l = s[a]
-                                          , c = null != l.children && !e({
+                                          , c = null != l.children && !r({
                                             results: l.children
                                         }, !0);
                                         if ((l.text || "").toUpperCase() === (t.term || "").toUpperCase() || c)
-                                            return !o && (r.data = s,
-                                            void n(r))
+                                            return !o && (e.data = s,
+                                            void n(e))
                                     }
                                     if (o)
                                         return !0;
@@ -2449,10 +2449,11 @@
                                         i.addOptions([d]),
                                         i.insertTag(s, u)
                                     }
-                                    r.results = s,
-                                    n(r)
+                                    e.results = s,
+                                    n(e)
                                 }
-                                )) : e.call(this, t, n)
+                                this._removeOldTags(),
+                                null != t.term && null == t.page ? e.call(this, t, r) : e.call(this, t, n)
                             }
                             ,
                             t.prototype.createTag = function(t, n) {
@@ -2490,8 +2491,7 @@
                             ,
                             t.prototype.query = function(t, n, i) {
                                 var r = this;
-                                n.term = n.term || "";
-                                var o = this.tokenizer(n, this.options, (function(t) {
+                                function o(t) {
                                     var n = r._normalizeItem(t);
                                     if (!r.$element.find("option").filter((function() {
                                         return e(this).val() === n.id
@@ -2502,16 +2502,18 @@
                                         r._removeOldTags(),
                                         r.addOptions([i])
                                     }
-                                    !function(e) {
-                                        r.trigger("select", {
-                                            data: e
-                                        })
-                                    }(n)
+                                    s(n)
                                 }
-                                ));
-                                o.term !== n.term && (this.$search.length && (this.$search.val(o.term),
+                                function s(e) {
+                                    r.trigger("select", {
+                                        data: e
+                                    })
+                                }
+                                n.term = n.term || "";
+                                var a = this.tokenizer(n, this.options, o);
+                                a.term !== n.term && (this.$search.length && (this.$search.val(a.term),
                                 this.$search.trigger("focus")),
-                                n.term = o.term),
+                                n.term = a.term),
                                 t.call(this, n, i)
                             }
                             ,
@@ -2942,30 +2944,34 @@
                                 };
                                 s.top = o.top,
                                 s.bottom = o.top + s.height;
-                                var a = this.$dropdown.outerHeight(!1)
-                                  , l = t.scrollTop()
-                                  , c = t.scrollTop() + t.height()
-                                  , u = l < o.top - a
-                                  , d = c > o.bottom + a
-                                  , p = {
+                                var a = {
+                                    height: this.$dropdown.outerHeight(!1)
+                                }
+                                  , l = {
+                                    top: t.scrollTop(),
+                                    bottom: t.scrollTop() + t.height()
+                                }
+                                  , c = l.top < o.top - a.height
+                                  , u = l.bottom > o.bottom + a.height
+                                  , d = {
                                     left: o.left,
                                     top: s.bottom
                                 }
-                                  , h = this.$dropdownParent;
-                                "static" === h.css("position") && (h = h.offsetParent());
-                                var f = {
+                                  , p = this.$dropdownParent;
+                                "static" === p.css("position") && (p = p.offsetParent());
+                                var h = {
                                     top: 0,
                                     left: 0
                                 };
-                                (e.contains(document.body, h[0]) || h[0].isConnected) && (f = h.offset()),
-                                p.top -= f.top,
-                                p.left -= f.left,
+                                (e.contains(document.body, p[0]) || p[0].isConnected) && (h = p.offset()),
+                                d.top -= h.top,
+                                d.left -= h.left,
                                 n || i || (r = "below"),
-                                d || !u || n ? !u && d && n && (r = "below") : r = "above",
-                                ("above" == r || n && "below" !== r) && (p.top = s.top - f.top - a),
+                                u || !c || n ? !c && u && n && (r = "below") : r = "above",
+                                ("above" == r || n && "below" !== r) && (d.top = s.top - h.top - a.height),
                                 null != r && (this.$dropdown.removeClass("select2-dropdown--below select2-dropdown--above").addClass("select2-dropdown--" + r),
                                 this.$container.removeClass("select2-container--below select2-container--above").addClass("select2-container--" + r)),
-                                this.$dropdownContainer.css(p)
+                                this.$dropdownContainer.css(d)
                             }
                             ,
                             n.prototype._resizeDropdown = function() {
@@ -3096,7 +3102,7 @@
                             }
                         }
                         )),
-                        n.define("select2/defaults", ["jquery", "require", "./results", "./selection/single", "./selection/multiple", "./selection/placeholder", "./selection/allowClear", "./selection/search", "./selection/eventRelay", "./utils", "./translation", "./diacritics", "./data/select", "./data/array", "./data/ajax", "./data/tags", "./data/tokenizer", "./data/minimumInputLength", "./data/maximumInputLength", "./data/maximumSelectionLength", "./dropdown", "./dropdown/search", "./dropdown/hidePlaceholder", "./dropdown/infiniteScroll", "./dropdown/attachBody", "./dropdown/minimumResultsForSearch", "./dropdown/selectOnClose", "./dropdown/closeOnSelect", "./i18n/en"], (function(e, t, n, i, r, o, s, a, l, c, u, d, p, h, f, g, m, v, y, _, w, b, $, A, x, D, S, C, E) {
+                        n.define("select2/defaults", ["jquery", "require", "./results", "./selection/single", "./selection/multiple", "./selection/placeholder", "./selection/allowClear", "./selection/search", "./selection/eventRelay", "./utils", "./translation", "./diacritics", "./data/select", "./data/array", "./data/ajax", "./data/tags", "./data/tokenizer", "./data/minimumInputLength", "./data/maximumInputLength", "./data/maximumSelectionLength", "./dropdown", "./dropdown/search", "./dropdown/hidePlaceholder", "./dropdown/infiniteScroll", "./dropdown/attachBody", "./dropdown/minimumResultsForSearch", "./dropdown/selectOnClose", "./dropdown/closeOnSelect", "./i18n/en"], (function(e, t, n, i, r, o, s, a, l, c, u, d, p, h, f, g, m, v, y, _, w, $, b, x, A, D, C, S, E) {
                             function O() {
                                 this.reset()
                             }
@@ -3118,23 +3124,23 @@
                                     }
                                 }
                                 if (null == u.resultsAdapter && (u.resultsAdapter = n,
-                                null != u.ajax && (u.resultsAdapter = c.Decorate(u.resultsAdapter, A)),
-                                null != u.placeholder && (u.resultsAdapter = c.Decorate(u.resultsAdapter, $)),
-                                u.selectOnClose && (u.resultsAdapter = c.Decorate(u.resultsAdapter, S))),
+                                null != u.ajax && (u.resultsAdapter = c.Decorate(u.resultsAdapter, x)),
+                                null != u.placeholder && (u.resultsAdapter = c.Decorate(u.resultsAdapter, b)),
+                                u.selectOnClose && (u.resultsAdapter = c.Decorate(u.resultsAdapter, C))),
                                 null == u.dropdownAdapter) {
                                     if (u.multiple)
                                         u.dropdownAdapter = w;
                                     else {
-                                        var O = c.Decorate(w, b);
+                                        var O = c.Decorate(w, $);
                                         u.dropdownAdapter = O
                                     }
                                     if (0 !== u.minimumResultsForSearch && (u.dropdownAdapter = c.Decorate(u.dropdownAdapter, D)),
-                                    u.closeOnSelect && (u.dropdownAdapter = c.Decorate(u.dropdownAdapter, C)),
+                                    u.closeOnSelect && (u.dropdownAdapter = c.Decorate(u.dropdownAdapter, S)),
                                     null != u.dropdownCssClass || null != u.dropdownCss || null != u.adaptDropdownCssClass) {
-                                        var T = t(u.amdBase + "compat/dropdownCss");
-                                        u.dropdownAdapter = c.Decorate(u.dropdownAdapter, T)
+                                        var q = t(u.amdBase + "compat/dropdownCss");
+                                        u.dropdownAdapter = c.Decorate(u.dropdownAdapter, q)
                                     }
-                                    u.dropdownAdapter = c.Decorate(u.dropdownAdapter, x)
+                                    u.dropdownAdapter = c.Decorate(u.dropdownAdapter, A)
                                 }
                                 if (null == u.selectionAdapter) {
                                     if (u.multiple ? u.selectionAdapter = r : u.selectionAdapter = i,
@@ -3142,8 +3148,8 @@
                                     u.allowClear && (u.selectionAdapter = c.Decorate(u.selectionAdapter, s)),
                                     u.multiple && (u.selectionAdapter = c.Decorate(u.selectionAdapter, a)),
                                     null != u.containerCssClass || null != u.containerCss || null != u.adaptContainerCssClass) {
-                                        var q = t(u.amdBase + "compat/containerCss");
-                                        u.selectionAdapter = c.Decorate(u.selectionAdapter, q)
+                                        var T = t(u.amdBase + "compat/containerCss");
+                                        u.selectionAdapter = c.Decorate(u.selectionAdapter, T)
                                     }
                                     u.selectionAdapter = c.Decorate(u.selectionAdapter, l)
                                 }
@@ -3160,10 +3166,22 @@
                             ,
                             O.prototype.reset = function() {
                                 function t(e) {
-                                    return e.replace(/[^\u0000-\u007E]/g, (function(e) {
+                                    function t(e) {
                                         return d[e] || e
                                     }
-                                    ))
+                                    return e.replace(/[^\u0000-\u007E]/g, t)
+                                }
+                                function n(i, r) {
+                                    if ("" === e.trim(i.term))
+                                        return r;
+                                    if (r.children && r.children.length > 0) {
+                                        for (var o = e.extend(!0, {}, r), s = r.children.length - 1; s >= 0; s--)
+                                            null == n(i, r.children[s]) && o.children.splice(s, 1);
+                                        return o.children.length > 0 ? o : n(i, o)
+                                    }
+                                    var a = t(r.text).toUpperCase()
+                                      , l = t(i.term).toUpperCase();
+                                    return a.indexOf(l) > -1 ? r : null
                                 }
                                 this.defaults = {
                                     amdBase: "./",
@@ -3173,18 +3191,7 @@
                                     dropdownAutoWidth: !1,
                                     escapeMarkup: c.escapeMarkup,
                                     language: {},
-                                    matcher: function n(i, r) {
-                                        if ("" === e.trim(i.term))
-                                            return r;
-                                        if (r.children && r.children.length > 0) {
-                                            for (var o = e.extend(!0, {}, r), s = r.children.length - 1; s >= 0; s--)
-                                                null == n(i, r.children[s]) && o.children.splice(s, 1);
-                                            return o.children.length > 0 ? o : n(i, o)
-                                        }
-                                        var a = t(r.text).toUpperCase()
-                                          , l = t(i.term).toUpperCase();
-                                        return a.indexOf(l) > -1 ? r : null
-                                    },
+                                    matcher: n,
                                     minimumInputLength: 0,
                                     maximumInputLength: 0,
                                     maximumSelectionLength: 0,
@@ -3245,7 +3252,7 @@
                                                 s = this.defaults.amdLanguageBase + s,
                                                 o = u.loadPath(s)
                                             } catch (e) {
-                                                n && window.console && console.warn && console.warn('Select2: The language file for "' + s + '" could not be automatically loaded. A fallback will be used instead.')
+                                                n && window.console && console.warn
                                             }
                                         }
                                     else
@@ -3283,10 +3290,10 @@
                                 null == this.options.dir && (e.prop("dir") ? this.options.dir = e.prop("dir") : e.closest("[dir]").prop("dir") ? this.options.dir = e.closest("[dir]").prop("dir") : this.options.dir = "ltr"),
                                 e.prop("disabled", this.options.disabled),
                                 e.prop("multiple", this.options.multiple),
-                                i.GetData(e[0], "select2Tags") && (this.options.debug && window.console && console.warn && console.warn('Select2: The `data-select2-tags` attribute has been changed to use the `data-data` and `data-tags="true"` attributes and will be removed in future versions of Select2.'),
+                                i.GetData(e[0], "select2Tags") && (this.options.debug && window.console && console.warn,
                                 i.StoreData(e[0], "data", i.GetData(e[0], "select2Tags")),
                                 i.StoreData(e[0], "tags", !0)),
-                                i.GetData(e[0], "ajaxUrl") && (this.options.debug && window.console && console.warn && console.warn("Select2: The `data-ajax-url` attribute has been changed to `data-ajax--url` and support for the old attribute will be removed in future versions of Select2."),
+                                i.GetData(e[0], "ajaxUrl") && (this.options.debug && window.console && console.warn,
                                 e.attr("ajax--url", i.GetData(e[0], "ajaxUrl")),
                                 i.StoreData(e[0], "ajax-Url", i.GetData(e[0], "ajaxUrl")));
                                 var r = {};
@@ -3296,8 +3303,8 @@
                                 for (var s = 0; s < e[0].attributes.length; s++) {
                                     var a = e[0].attributes[s].name
                                       , l = "data-";
-                                    if (a.substr(0, 5) == l) {
-                                        var c = a.substring(5)
+                                    if (a.substr(0, l.length) == l) {
+                                        var c = a.substring(l.length)
                                           , u = i.GetData(e[0], c);
                                         r[c.replace(/-([a-z])/g, o)] = u
                                     }
@@ -3637,14 +3644,14 @@
                             }
                             ,
                             r.prototype.enable = function(e) {
-                                this.options.get("debug") && window.console && console.warn && console.warn('Select2: The `select2("enable")` method has been deprecated and will be removed in later Select2 versions. Use $element.prop("disabled") instead.'),
+                                this.options.get("debug") && window.console && console.warn,
                                 null != e && 0 !== e.length || (e = [!0]);
                                 var t = !e[0];
                                 this.$element.prop("disabled", t)
                             }
                             ,
                             r.prototype.data = function() {
-                                this.options.get("debug") && arguments.length > 0 && window.console && console.warn && console.warn('Select2: Data can no longer be set using `select2("data")`. You should consider setting the value instead using `$element.val()`.');
+                                this.options.get("debug") && arguments.length > 0 && window.console && console.warn;
                                 var e = [];
                                 return this.dataAdapter.current((function(t) {
                                     e = t
@@ -3654,7 +3661,7 @@
                             }
                             ,
                             r.prototype.val = function(t) {
-                                if (this.options.get("debug") && window.console && console.warn && console.warn('Select2: The `select2("val")` method has been deprecated and will be removed in later Select2 versions. Use $element.val() instead.'),
+                                if (this.options.get("debug") && window.console && console.warn,
                                 null == t || 0 === t.length)
                                     return this.$element.val();
                                 var n = t[0];
@@ -3703,19 +3710,20 @@
                         }
                         )),
                         n.define("select2/compat/utils", ["jquery"], (function(e) {
-                            return {
-                                syncCssClasses: function(t, n, i) {
-                                    var r, o, s = [];
-                                    (r = e.trim(t.attr("class"))) && e((r = "" + r).split(/\s+/)).each((function() {
-                                        0 === this.indexOf("select2-") && s.push(this)
-                                    }
-                                    )),
-                                    (r = e.trim(n.attr("class"))) && e((r = "" + r).split(/\s+/)).each((function() {
-                                        0 !== this.indexOf("select2-") && null != (o = i(this)) && s.push(o)
-                                    }
-                                    )),
-                                    t.attr("class", s.join(" "))
+                            function t(t, n, i) {
+                                var r, o, s = [];
+                                (r = e.trim(t.attr("class"))) && e((r = "" + r).split(/\s+/)).each((function() {
+                                    0 === this.indexOf("select2-") && s.push(this)
                                 }
+                                )),
+                                (r = e.trim(n.attr("class"))) && e((r = "" + r).split(/\s+/)).each((function() {
+                                    0 !== this.indexOf("select2-") && null != (o = i(this)) && s.push(o)
+                                }
+                                )),
+                                t.attr("class", s.join(" "))
+                            }
+                            return {
+                                syncCssClasses: t
                             }
                         }
                         )),
@@ -3781,7 +3789,7 @@
                         )),
                         n.define("select2/compat/initSelection", ["jquery"], (function(e) {
                             function t(e, t, n) {
-                                n.get("debug") && window.console && console.warn && console.warn("Select2: The `initSelection` option has been deprecated in favor of a custom data adapter that overrides the `current` method. This method is now called multiple times instead of a single time when the instance is initialized. Support will be removed for the `initSelection` option in future versions of Select2"),
+                                n.get("debug") && window.console && console.warn,
                                 this.initSelection = n.get("initSelection"),
                                 this._isInitialized = !1,
                                 e.call(this, t, n)
@@ -3803,7 +3811,7 @@
                             function n(e, t, n) {
                                 this._currentData = [],
                                 this._valueSeparator = n.get("valueSeparator") || ",",
-                                "hidden" === t.prop("type") && n.get("debug") && console && console.warn && console.warn("Select2: Using a hidden input with Select2 is no longer supported and may stop working in the future. It is recommended to use a `<select>` element instead."),
+                                "hidden" === t.prop("type") && n.get("debug") && console && console.warn,
                                 e.call(this, t, n)
                             }
                             return n.prototype.current = function(t, n) {
@@ -3876,8 +3884,8 @@
                         }
                         )),
                         n.define("select2/compat/matcher", ["jquery"], (function(e) {
-                            return function(t) {
-                                return function(n, i) {
+                            function t(t) {
+                                function n(n, i) {
                                     var r = e.extend(!0, {}, i);
                                     if (null == n.term || "" === e.trim(n.term))
                                         return r;
@@ -3891,12 +3899,14 @@
                                     }
                                     return t(n.term, i.text, i) ? r : null
                                 }
+                                return n
                             }
+                            return t
                         }
                         )),
                         n.define("select2/compat/query", [], (function() {
                             function e(e, t, n) {
-                                n.get("debug") && window.console && console.warn && console.warn("Select2: The `query` option has been deprecated in favor of a custom data adapter that overrides the `query` method. Support will be removed for the `query` option in future versions of Select2."),
+                                n.get("debug") && window.console && console.warn,
                                 e.call(this, t, n)
                             }
                             return e.prototype.query = function(e, t, n) {
@@ -3924,7 +3934,8 @@
                             function e() {}
                             return e.prototype.bind = function(e, t, n) {
                                 e.call(this, t, n);
-                                this.$dropdown.on(["blur", "change", "click", "dblclick", "focus", "focusin", "focusout", "input", "keydown", "keyup", "keypress", "mousedown", "mouseenter", "mouseleave", "mousemove", "mouseover", "mouseup", "search", "touchend", "touchstart"].join(" "), (function(e) {
+                                var i = ["blur", "change", "click", "dblclick", "focus", "focusin", "focusout", "input", "keydown", "keyup", "keypress", "mousedown", "mouseenter", "mouseleave", "mousemove", "mouseover", "mouseup", "search", "touchend", "touchstart"];
+                                this.$dropdown.on(i.join(" "), (function(e) {
                                     e.stopPropagation()
                                 }
                                 ))
@@ -3937,7 +3948,8 @@
                             function e() {}
                             return e.prototype.bind = function(e, t, n) {
                                 e.call(this, t, n);
-                                this.$selection.on(["blur", "change", "click", "dblclick", "focus", "focusin", "focusout", "input", "keydown", "keyup", "keypress", "mousedown", "mouseenter", "mouseleave", "mousemove", "mouseover", "mouseup", "search", "touchend", "touchstart"].join(" "), (function(e) {
+                                var i = ["blur", "change", "click", "dblclick", "focus", "focusin", "focusout", "input", "keydown", "keyup", "keypress", "mousedown", "mouseenter", "mouseleave", "mousemove", "mouseover", "mouseup", "search", "touchend", "touchstart"];
+                                this.$selection.on(i.join(" "), (function(e) {
                                     e.stopPropagation()
                                 }
                                 ))
@@ -3946,7 +3958,9 @@
                             e
                         }
                         )),
-                        i = function(e) {
+                        function(t) {
+                            "function" == typeof n.define && n.define.amd ? n.define("jquery-mousewheel", ["jquery"], t) : e.exports = t
+                        }((function(e) {
                             var t, n, i = ["wheel", "mousewheel", "DOMMouseScroll", "MozMousePixelScroll"], r = "onwheel"in document || document.documentMode >= 9 ? ["wheel"] : ["mousewheel", "DomMouseScroll", "MozMousePixelScroll"], o = Array.prototype.slice;
                             if (e.event.fixHooks)
                                 for (var s = i.length; s; )
@@ -4058,8 +4072,7 @@
                                 }
                             })
                         }
-                        ,
-                        "function" == typeof n.define && n.define.amd ? n.define("jquery-mousewheel", ["jquery"], i) : e.exports = i,
+                        )),
                         n.define("jquery.select2", ["jquery", "jquery-mousewheel", "./select2/core", "./select2/defaults", "./select2/utils"], (function(e, t, n, i, r) {
                             if (null == e.fn.select2) {
                                 var o = ["open", "close", "destroy"];
@@ -4075,7 +4088,7 @@
                                         var i, s = Array.prototype.slice.call(arguments, 1);
                                         return this.each((function() {
                                             var e = r.GetData(this, "select2");
-                                            null == e && window.console && console.error && console.error("The select2('" + t + "') method was called on an element that is not using Select2."),
+                                            null == e && window.console && console.error,
                                             i = e[t].apply(e, s)
                                         }
                                         )),
@@ -4091,15 +4104,14 @@
                         {
                             define: n.define,
                             require: n.require
-                        };
-                        var i
+                        }
                     }()
                       , i = n.require("jquery.select2");
                     return t.fn.select2.amd = n,
                     i
                 }
                 ,
-                void 0 === (o = i.apply(t, r)) || (e.exports = o)
+                void 0 === (o = "function" == typeof i ? i.apply(t, r) : i) || (e.exports = o)
             },
             1145: function(t) {
                 "use strict";

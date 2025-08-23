@@ -28,43 +28,58 @@
 
             <form id="form-create" action="{{ route('page.planning.store') }}" method="POST">
                 @csrf
-                <div class="row mb-3">
-                    <div class="col-md-3 mb-3">
+                <div class="d-flex gap-4 mb-3">
+                    <div class=""">
                         <label for="ActivityId" class="form-label">Activity Id</label>
                         <input type="text" name="ActivityId" class="form-control" value="{{ old('ActivityId') }}"
                             oninput="this.value = this.value.toUpperCase()" required>
                     </div>
-                    <div class="col-md-9 mb-3">
+                    <div class="w-100">
                         <label for="ActivityName" class="form-label">Activity Name</label>
                         <input type="text" name="ActivityName" class="form-control" value="{{ old('ActivityName') }}"
                             required>
                     </div>
                 </div>
-                <div class="row mb-3">
-                    <div class="col-md-3 mb-3">
-                        <label for="WoNumber" class="form-label">Wo Number</label>
-                        <input type="text" name="WoNumber" class="form-control" value="{{ old('WoNumber') }}"
-                            oninput="this.value = this.value.toUpperCase()" required>
-                    </div>
+                <div class="mb-3">
+                    <label for="wonumber_id" class="form-label">Wo Number</label>
+                    <select id="wonumber_id" name="wonumber_id" class="form-control form-select select2" required>
+                        <option value="">-- Select Wo Number --</option>
+                        @foreach ($wonumbers as $wonumber)
+                            <option value="{{ $wonumber->id }}" {{ old('wonumber_id') == $wonumber->id ? 'selected' : '' }}>
+                                {{ $wonumber->wonumber }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
-                <div class="row mb-3">
-                    <div class="col-md-3 mb-3">
-                        <label for="BLProjectStart" class="form-label">BL Project Start</label>
-                        <input type="text" name="BLProjectStart" class="form-control" value="{{ old('BLProjectStart') }}"
-                            placeholder="YYYY-MM-DD" oninput="this.value = this.value.toUpperCase()" required>
-                    </div>
 
-                    <div class="col-md-3 mb-3">
-                        <label for="BLProjectFinish" class="form-label">BL Project Finish</label>
-                        <input type="text" name="BLProjectFinish" class="form-control"
-                            value="{{ old('BLProjectFinish') }}" placeholder="YYYY-MM-DD"
-                            oninput="this.value = this.value.toUpperCase()" required>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label for="Department" class="form-label">Department</label>
-                        <input type="text" name="Department" class="form-control" value="{{ old('Department') }}"
-                            oninput="this.value = this.value.toUpperCase()" required>
-                    </div>
+                <div class="mb-3">
+                    <label for="department_id" class="form-label">Department</label>
+                    <select id="department_id" name="department_id" class="form-control form-select select2" required>
+                        <option value="">-- Select Department --</option>
+                        @foreach ($departments as $department)
+                            <option value="{{ $department->id }}"
+                                {{ old('department_id') == $department->id ? 'selected' : '' }}>
+                                {{ $department->initial }} - {{ $department->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="BLProjectStart" class="form-label">BL Project Start</label>
+                    <input type="date" id="BLProjectStart" name="BLProjectStart" class="form-control"
+                        data-provider="flatpickr" value="{{ old('BLProjectStart') }}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="BLProjectFinish" class="form-label">BL Project Finish</label>
+                    <input type="text" id="BLProjectFinish" name="BLProjectFinish" class="form-control"
+                        data-provider="flatpickr" value="{{ old('BLProjectFinish') }}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="BLDuration" class="form-label">BL Duration</label>
+                    <input type="number" id="BLDuration" name="BLDuration" class="form-control"
+                        value="{{ old('BLDuration') }}" readonly>
                 </div>
 
                 <div class="card-footer d-flex justify-content-end gap-3">
@@ -79,6 +94,41 @@
 @endsection
 @push('scripts')
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            $('.select2').select2();
+
+            const startPicker = flatpickr("#BLProjectStart", {
+                dateFormat: "d-M-y",
+                defaultDate: new Date(),
+                onChange: calculateDuration
+            });
+
+            const endPicker = flatpickr("#BLProjectFinish", {
+                dateFormat: "d-M-y",
+                defaultDate: new Date(),
+                onChange: calculateDuration
+            });
+
+            function calculateDuration() {
+
+                const startDate = startPicker.selectedDates[0];
+                const endDate = endPicker.selectedDates[0];
+                console.log(startDate, endDate);
+                if (startDate && endDate) {
+                    // hitung selisih hari (termasuk hari awal dan akhir)
+                    const diffTime = endDate - startDate;
+                    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+
+                    $("#BLDuration").val(diffDays > 0 ? diffDays : 0);
+                } else {
+                    $("#BLDuration").val("");
+                }
+            }
+
+            $("#BLDuration").val(1);
+        });
+
         document.getElementById('form-create').addEventListener('submit', function(e) {
             e.preventDefault();
 

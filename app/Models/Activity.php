@@ -17,18 +17,23 @@ class Activity extends Model
         'ActivityName',
         'BLDuration',
         'ActualDuration',
+        'Holiday',
         'BLProjectStart',
         'BLProjectFinish',
         'ActualStart',
         'ActualFinish',
         'ActivityStatus',
         'Department',
-        'remarks',
+        'Remarks',
         'WoNumber',
     ];
 
     public function department()
     {
         return $this->belongsTo(Department::class, 'Department', 'id');
+    }
+    public function wonumber()
+    {
+        return $this->belongsTo(WoNumber::class, 'WoNumber', 'id');
     }
 }

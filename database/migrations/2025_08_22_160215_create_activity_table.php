@@ -14,16 +14,17 @@ return new class extends Migration
         Schema::create('activity', function (Blueprint $table) {
             $table->id();
             $table->string('ActivityId')->unique();
-            $table->integer('ActivityName')->nullable();
-            $table->integer('BLDuration')->nullable();
-            $table->integer('ActualDuration')->nullable();
+            $table->string('ActivityName')->nullable();
+            $table->integer('BLDuration')->default(0);
+            $table->integer('ActualDuration')->default(0);
+            $table->integer('Holiday')->default(0);
             $table->date('BLProjectStart')->nullable();
             $table->date('BLProjectFinish')->nullable();
             $table->date('ActualStart')->nullable();
             $table->date('ActualFinish')->nullable();
             $table->integer('ActivityStatus')->default(0);
             $table->integer('Department')->nullable();
-            $table->string('remarks')->nullable();
+            $table->string('Remarks')->nullable();
             $table->string('WoNumber')->nullable();
             $table->timestamps();
             $table->softDeletes();

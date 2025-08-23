@@ -32,13 +32,13 @@
                         <th>Activity Name</th>
                         <th>Wo Number</th>
                         <th>BL Duration</th>
-                        <th>Actual Duration</th>
+                        {{-- <th>Actual Duration</th> --}}
                         <th>BL Project Start</th>
                         <th>BL Project Finish</th>
-                        <th>Actual Start</th>
-                        <th>Actual Finish</th>
+                        {{-- <th>Actual Start</th>
+                        <th>Actual Finish</th> --}}
                         <th>Department</th>
-                        <th>Remarks</th>
+                        {{-- <th>Remarks</th> --}}
                     </tr>
                 </thead>
                 <tbody>
@@ -60,13 +60,13 @@
                             <td>{{ $planning->ActivityName }}</td>
                             <td>{{ $planning->WoNumber }}</td>
                             <td>{{ $planning->BLDuration }}</td>
-                            <td>{{ $planning->ActualDuration }}</td>
+                            {{-- <td>{{ $planning->ActualDuration }}</td> --}}
                             <td>{{ $planning->BLProjectStart }}</td>
                             <td>{{ $planning->BLProjectFinish }}</td>
-                            <td>{{ $planning->ActualStart }}</td>
-                            <td>{{ $planning->ActualFinish }}</td>
+                            {{-- <td>{{ $planning->ActualStart }}</td>
+                            <td>{{ $planning->ActualFinish }}</td> --}}
                             <td>{{ $planning->Department }}</td>
-                            <td>{{ $planning->remarks }}</td>
+                            {{-- <td>{{ $planning->remarks }}</td> --}}
                         </tr>
                     @endforeach
                 </tbody>
