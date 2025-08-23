@@ -40,7 +40,7 @@
                             <td>
                                 <a href="{{ route('page.user.edit', $user->id) }}" class="btn btn-sm btn-warning"
                                     title="Edit User"><i class="icon-base bx bx-edit icon-sm"></i></a>
-                                <form class="form-delete" action="{{ route('page.user.destroy', $user->id) }}"
+                                <form class="form-delete" data-name="{{ $user->name }}" action="{{ route('page.user.destroy', $user->id) }}"
                                     method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
@@ -139,5 +139,27 @@
                 }, 300)
 
         }
+
+        document.querySelectorAll('.form-delete').forEach(function(form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                let name = form.dataset.name;
+
+                Swal.fire({
+                    title: 'Delete user data?',
+                    text: `Data "${name}" will be removed from the list`,
+                    icon: 'question',
+                    theme: 'dark',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
     </script>
 @endpush

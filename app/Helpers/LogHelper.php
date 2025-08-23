@@ -16,7 +16,7 @@ class LogHelper
             'model' => $model,
             'model_id' => $model_id,
             'message' => $message,
-            'data' => is_array($data) ? $data : request()->all(),
+            'data' => is_array($data) ? $data : request()->except(['_token', '_method']),
             'url' => request()->fullUrl(),
         ]);
     }

@@ -40,8 +40,9 @@
                                 <a href="{{ route('page.department.edit', $department->id) }}"
                                     class="btn btn-sm btn-warning" title="Edit Department"><i
                                         class="icon-base bx bx-edit icon-sm"></i></a>
-                                <form class="form-delete" action="{{ route('page.department.destroy', $department->id) }}"
-                                    method="POST" style="display:inline;">
+                                <form class="form-delete" data-name="{{ $department->name }}"
+                                    action="{{ route('page.department.destroy', $department->id) }}" method="POST"
+                                    style="display:inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-danger" title="Delete Department"><i
@@ -123,5 +124,27 @@
                 }, 300)
 
         }
+
+        document.querySelectorAll('.form-delete').forEach(function(form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                let name = form.dataset.name;
+
+                Swal.fire({
+                    title: 'Delete department data?',
+                    text: `Data "${name}" will be removed from the list`,
+                    icon: 'question',
+                    theme: 'dark',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
     </script>
 @endpush
