@@ -58,7 +58,7 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li>
-                        <a class="dropdown-item" href="pages-account-settings-account.html">
+                        <a class="dropdown-item" href="#">
                             <div class="d-flex">
                                 <div class="flex-shrink-0 me-3">
                                     <div class="avatar avatar-online">
@@ -69,7 +69,7 @@
                                 <div class="flex-grow-1">
                                     <h6 class="mb-0">{{ $user->name }}</h6>
                                     <small
-                                        class="text-body-secondary">{{ $user->role->name ?? 'Tidak ada role' }}</small>
+                                        class="text-body-secondary">{{ $user->department->initial }} | {{ $user->role->name ?? 'Tidak ada role' }}</small>
                                 </div>
                             </div>
                         </a>

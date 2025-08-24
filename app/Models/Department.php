@@ -16,6 +16,10 @@ class Department extends Model
         'name',
     ];
 
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
     public function activity()
     {
         return $this->hasMany(Activity::class, 'department_id', 'id');

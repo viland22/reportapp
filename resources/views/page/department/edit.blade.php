@@ -27,16 +27,20 @@
 
                 <div class="mb-3">
                     <label>Initial</label>
-                    <input type="text" name="initial" class="form-control" value="{{ old('initial', $data->initial) }}" oninput="this.value = this.value.toUpperCase()" required>
+                    <input type="text" name="initial" class="form-control" value="{{ old('initial', $data->initial) }}"
+                        oninput="this.value = this.value.toUpperCase()" required>
                 </div>
 
                 <div class="mb-3">
                     <label>Name</label>
-                    <input type="text" name="name" class="form-control" value="{{ old('name', $data->name) }}" required>
+                    <input type="text" name="name" class="form-control" value="{{ old('name', $data->name) }}"
+                        required>
                 </div>
                 <div class="card-footer d-flex justify-content-end gap-3">
-                    <button type="submit" class="btn btn-primary"><i class="icon-base bx bx-save icon-sm me-1"></i> Update</button>
-                    <a href="{{ route('page.department.index') }}" class="btn btn-danger"><i class="icon-base bx bx-x icon-sm me-1"></i> Cancel</a>
+                    <a href="{{ route('page.department.index') }}" class="btn btn-dark"><i
+                            class="icon-base bx bx-arrow-back icon-sm me-1"></i> Back to list</a>
+                    <button type="submit" class="btn btn-primary"><i class="icon-base bx bx-save icon-sm me-1"></i>
+                        Update</button>
                 </div>
             </form>
         </div>
@@ -45,28 +49,27 @@
 @endsection
 
 @section('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const form = document.getElementById('form-edit');
-        if (form) {
-            form.addEventListener('submit', function (e) {
-                e.preventDefault();
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('form-edit');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
 
-                Swal.fire({
-                    title: 'Update department data?',
-                    text: "Data will be updated in the system",
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes, save!',
-                    cancelButtonText: 'Cancel'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
+                    Swal.fire({
+                        title: 'Update department data?',
+                        text: "Data will be updated in the system",
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, save!',
+                        cancelButtonText: 'Cancel'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
                 });
-            });
-        }
-    });
-</script>
+            }
+        });
+    </script>
 @endsection
-

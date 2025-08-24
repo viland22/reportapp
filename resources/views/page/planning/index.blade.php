@@ -47,8 +47,8 @@
                             <td>
                                 <a href="{{ route('page.planning.edit', $planning->id) }}" class="btn btn-sm btn-warning"
                                     title="Edit Planning"><i class="icon-base bx bx-edit icon-sm"></i></a>
-                                <form class="form-delete"
-                                    data-activity="{{ $planning->ActivityName }}"
+                                <form class="form-delete" data-activity="{{ $planning->ActivityName }}"
+                                    data-status="{{ $planning->ActivityStatus }}"
                                     action="{{ route('page.planning.destroy', $planning->id) }}" method="POST"
                                     style="display:inline;">
                                     @csrf
@@ -60,8 +60,8 @@
                             <td>{{ $planning->ActivityId }}</td>
                             <td>{{ $planning->ActivityName }}</td>
                             <td>{{ $planning->wo_number->wo_number ?? '-' }}</td>
-                            <td>{{ $planning->BLProjectStart }}</td>
-                            <td>{{ $planning->BLProjectFinish }}</td>
+                            <td>{{ \Carbon\Carbon::parse($planning->BLProjectStart )->format('d-M-y') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($planning->BLProjectFinish )->format('d-M-y') }}</td>
                             <td>{{ $planning->BLDuration }}</td>
                             {{-- <td>{{ $planning->ActualStart }}</td>
                             <td>{{ $planning->ActualFinish }}</td>
@@ -146,20 +146,32 @@
                 e.preventDefault();
 
                 let activityName = form.dataset.activity;
+                let actvityStatus = form.dataset.status;
 
-                Swal.fire({
-                    title: 'Delete planning data?',
-                    text: `Data "${activityName}" will be removed from the list`,
-                    icon: 'question',
-                    theme: 'dark',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes, delete!',
-                    cancelButtonText: 'Cancel'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
-                });
+                if (actvityStatus == 0) {
+                    Swal.fire({
+                        title: 'Delete planning data?',
+                        text: `Data "${activityName}" will be removed from the list`,
+                        icon: 'question',
+                        theme: 'dark',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, delete!',
+                        cancelButtonText: 'Cancel'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Cannot delete planning data',
+                        text: `Data activity "${activityName}" is in progress!`,
+                        icon: 'error',
+                        theme: 'dark',
+                        confirmButtonText: 'Ok',
+                    });
+                }
+
             });
         });
     </script>

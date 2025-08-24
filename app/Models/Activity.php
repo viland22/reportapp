@@ -28,6 +28,18 @@ class Activity extends Model
         'Remarks',
     ];
 
+    protected $appends = ['ActivityStatusName'];
+
+    public function getActivityStatusNameAttribute()
+    {
+        return match($this->ActivityStatus) {
+            0 => 'Not Started',
+            1 => 'In Progress',
+            2 => 'Completed',
+            default => 'Unknown',
+        };
+    }
+
     public function department()
     {
         return $this->belongsTo(Department::class, 'department_id', 'id');

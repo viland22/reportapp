@@ -7,6 +7,7 @@ use App\Models\Department;
 use App\Models\Wo_Number;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use App\Helpers\LogHelper;
 use Carbon\Carbon;
 
@@ -17,6 +18,12 @@ class PlanningController extends Controller
      */
     public function index()
     {
+        if (Auth::user()->role->name !== 'admin') {
+            if (strtoupper(Auth::user()->department->initial) !== 'PPIC') {
+                abort(403, 'Unauthorized');
+            }
+        }
+
         $data = Activity::with(['department', 'wo_number'])->get();
         return view('page.planning.index', compact('data'));
     }
@@ -26,6 +33,11 @@ class PlanningController extends Controller
      */
     public function create()
     {
+        if (Auth::user()->role->name !== 'admin') {
+            if (strtoupper(Auth::user()->department->initial) !== 'PPIC') {
+                abort(403, 'Unauthorized');
+            }
+        }
         $departments = Department::all();
         Log::info($departments);
         $wo_numbers = Wo_Number::all();
@@ -67,8 +79,15 @@ class PlanningController extends Controller
             return redirect()->route('page.planning.index')->with('success', 'Planning created successfully.');
         } catch (\Exception $e) {
             Log::error('Gagal membuat planning: ' . $e->getMessage());
-            LogHelper::record('error', 'create', 'Planning', null, $e->getMessage(), $request->all());
-            $errorMessage = 'An error occurred while adding planning data, please contact the administrator to see the logs.';
+
+            // cek jika error duplicate entry
+            if ($e->getCode() == 23000 && str_contains($e->getMessage(), 'Duplicate entry')) {
+                $errorMessage = 'Failed to add planning, The Activity Id is already registered in the database.';
+            } else {
+                $errorMessage = 'An error occurred while adding planning data, please contact the administrator to see the logs.';
+            }
+
+            LogHelper::record('error', 'create', 'Planning', null, $e->getMessage(), $request->except('_token'));
             return redirect()->back()->withInput()->with('error', $errorMessage);
         }
     }
@@ -86,6 +105,13 @@ class PlanningController extends Controller
      */
     public function edit(string $id)
     {
+
+        if (Auth::user()->role->name !== 'admin') {
+            if (strtoupper(Auth::user()->department->initial) !== 'PPIC') {
+                abort(403, 'Unauthorized');
+            }
+        }
+
         $data = Activity::findOrFail($id);
         $departments = Department::all();
         $wo_numbers = Wo_Number::all();
@@ -100,14 +126,14 @@ class PlanningController extends Controller
     {
         try {
             $request->validate([
-            'ActivityId' => 'required|string|max:100',
-            'ActivityName' => 'required|string|max:255',
-            'wo_number_id' => 'required|exists:wo_numbers,id',
-            'department_id' => 'required|exists:departments,id',
-            'BLProjectStart' => 'required|date_format:d-M-y',
-            'BLProjectFinish' => 'required|date_format:d-M-y',
-            'BLDuration' => 'required|integer|min:1',
-        ]);
+                'ActivityId' => 'required|string|max:100',
+                'ActivityName' => 'required|string|max:255',
+                'wo_number_id' => 'required|exists:wo_numbers,id',
+                'department_id' => 'required|exists:departments,id',
+                'BLProjectStart' => 'required|date_format:d-M-y',
+                'BLProjectFinish' => 'required|date_format:d-M-y',
+                'BLDuration' => 'required|integer|min:1',
+            ]);
             $activity = Activity::findOrFail($id);
             Log::info('Activity found: ' . $activity->ActivityName);
             $activity->ActivityId = $request->ActivityId;
@@ -120,13 +146,13 @@ class PlanningController extends Controller
 
             $activity->save();
 
-            LogHelper::record('success', 'update', 'Activity', $activity->id, 'Activity updated successfully.');
+            LogHelper::record('success', 'update', 'Planning', $activity->id, 'Planning updated successfully.');
 
-            return redirect()->route('page.planning.index')->with('success', 'Activity updated successfully.');
+            return redirect()->route('page.planning.index')->with('success', 'Planning updated successfully.');
         } catch (\Exception $e) {
-            Log::error('Failed to update activity: ' . $e->getMessage());
-            LogHelper::record('error', 'update', 'Activity', $id, $e->getMessage(), $request->all());
-            $errorMessage = 'An error occurred while updating activity data, please contact the administrator to see the logs.';
+            Log::error('Failed to update Planning: ' . $e->getMessage());
+            LogHelper::record('error', 'update', 'Planning', $id, $e->getMessage(), $request->all());
+            $errorMessage = 'An error occurred while updating Planning data, please contact the administrator to see the logs.';
             return redirect()->back()->withInput()->with('error', $errorMessage);
         }
     }
@@ -136,6 +162,7 @@ class PlanningController extends Controller
      */
     public function destroy(string $id)
     {
+
         try {
             $planning = Activity::findOrFail($id);
             $planning->delete();

@@ -27,12 +27,14 @@
 
                 <div class="mb-3">
                     <label>Email</label>
-                    <input type="email" name="email" class="form-control" value="{{ old('email', $userSelected->email) }}" readonly>
+                    <input type="email" name="email" class="form-control"
+                        value="{{ old('email', $userSelected->email) }}" readonly>
                 </div>
 
                 <div class="mb-3">
                     <label>Name</label>
-                    <input type="text" name="name" class="form-control" value="{{ old('name', $userSelected->name) }}">
+                    <input type="text" name="name" class="form-control"
+                        value="{{ old('name', $userSelected->name) }}">
                 </div>
 
                 <div class="mb-3">
@@ -42,7 +44,7 @@
 
                 <div class="mb-3">
                     <label for="role_id" class="form-label">Role</label>
-                    <select name="role_id" class="form-select" required>
+                    <select name="role_id" class="form-select select2" required>
                         <option value="">-- Select Role --</option>
                         @foreach ($roles as $role)
                             <option value="{{ $role->id }}"
@@ -52,9 +54,23 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="mb-3">
+                    <label for="department_id" class="form-label">Department</label>
+                    <select id="department_id" name="department_id" class="form-control form-select select2" required>
+                        <option value="">-- Select Department --</option>
+                        @foreach ($departments as $department)
+                            <option value="{{ $department->id }}"
+                                {{ old('department_id', $userSelected->department_id) == $department->id ? 'selected' : '' }}>
+                                {{ $department->initial }} - {{ $department->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
                 <div class="card-footer d-flex justify-content-end gap-3">
-                    <button type="submit" class="btn btn-primary"><i class="icon-base bx bx-save icon-sm me-1"></i> Update</button>
-                    <a href="{{ route('page.user.index') }}" class="btn btn-danger"><i class="icon-base bx bx-x icon-sm me-1"></i> Cancel</a>
+                    <a href="{{ route('page.user.index') }}" class="btn btn-dark"><i
+                            class="icon-base bx bx-arrow-back icon-sm me-1"></i> Back to list</a>
+                    <button type="submit" class="btn btn-primary"><i class="icon-base bx bx-save icon-sm me-1"></i>
+                        Update</button>
                 </div>
             </form>
         </div>
@@ -63,28 +79,30 @@
 @endsection
 
 @section('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const form = document.getElementById('form-edit');
-        if (form) {
-            form.addEventListener('submit', function (e) {
-                e.preventDefault();
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            $('.select2').select2();
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('form-edit');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
 
-                Swal.fire({
-                    title: 'Update user data?',
-                    text: "Data will be updated in the system",
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes, save!',
-                    cancelButtonText: 'Cancel'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
+                    Swal.fire({
+                        title: 'Update user data?',
+                        text: "Data will be updated in the system",
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, save!',
+                        cancelButtonText: 'Cancel'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
                 });
-            });
-        }
-    });
-</script>
+            }
+        });
+    </script>
 @endsection
-

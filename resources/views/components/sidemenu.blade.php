@@ -24,7 +24,7 @@
                 <div>Dashboard</div>
             </a>
         </li>
-        @if ($user->role->name === 'admin' || $user->role->name === 'ppic')
+        @if ($user->role->name === 'admin' || $user->department->initial === 'PPIC')
             <li class="menu-item {{ Request::is('planning*') ? 'active' : '' }}">
                 <a href="/planning" class="menu-link">
                     <i class="menu-icon icon-base bx bx-calendar"></i>
@@ -32,14 +32,12 @@
                 </a>
             </li>
         @endif
-        @if ($user->role->name === 'admin' || $user->role->name === 'produksi')
-            <li class="menu-item {{ Request::is('workshop*') ? 'active' : '' }}">
-                <a href="/workshop" class="menu-link">
-                    <i class="menu-icon icon-base bx bx-calendar-check"></i>
-                    <div>Workshop</div>
-                </a>
-            </li>
-        @endif
+        <li class="menu-item {{ Request::is('workshop*') ? 'active' : '' }}">
+            <a href="/workshop" class="menu-link">
+                <i class="menu-icon icon-base bx bx-calendar-check"></i>
+                <div>Workshop</div>
+            </a>
+        </li>
         @if ($user->role->name === 'admin')
             <li class="menu-header small">
                 <span class="menu-header-text">Master Data</span>

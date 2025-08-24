@@ -1,16 +1,17 @@
 @extends('layouts.dashboard')
 
-@section('title', 'User')
+@section('title', 'Workshop')
 
 @section('content')
     <div class="card">
         <div class="card-header d-flex align-items-center justify-content-between px-5 pb-0">
-            <h5 class="card-title">Master User</h5>
-            <div class="card-actions">
-                <a href="{{ route('page.user.create') }}" class="btn btn-primary"><i
-                        class="icon-base icon-16px bx bx-plus me-md-2"></i> <span class="d-md-inline-block d-none">Add
-                        User</span></a>
+            <h5 class="card-title">Workshop</h5>
+            <div class="card-actions d-flex align-items-center gap-2">
+                <span class="badge bg-danger">Not Started: {{ $statusCounts['not_started'] }}</span>
+                <span class="badge bg-primary">In Progress: {{ $statusCounts['in_progress'] }}</span>
+                <span class="badge bg-success">Completed: {{ $statusCounts['completed'] }}</span>
             </div>
+
         </div>
         <hr />
         @if (session('success'))
@@ -24,37 +25,40 @@
             </div>
         @endif
         <div class="card-datatable text-nowrap table-responsive">
-            <table class="table table-sm table-striped table-hover table-responsive">
+            <table class="table table-sm table-striped table-hover table-responsive text-sm">
                 <thead>
                     <tr>
-                        <th style="width:10px">Action</th>
-                        <th>No</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Role</th>
+                        <th style="width: 10px">Action</th>
+                        <th>Status</th>
+                        <th>Activity Id</th>
+                        <th>Activity Name</th>
+                        <th>Wo Number</th>
+                        <th>Actual Start</th>
+                        <th>Actual Finish</th>
+                        <th>Holiday</th>
+                        <th>Actual Duration</th>
+                        <th>Remarks</th>
                         <th>Department</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($userall as $index => $user)
+                    @foreach ($data as $index => $workshop)
                         <tr>
                             <td>
-                                <a href="{{ route('page.user.edit', $user->id) }}" class="btn btn-sm btn-warning"
-                                    title="Edit User"><i class="icon-base bx bx-edit icon-sm"></i></a>
-                                <form class="form-delete" data-name="{{ $user->name }}" action="{{ route('page.user.destroy', $user->id) }}"
-                                    method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger" title="Delete User"><i
-                                            class="icon-base bx bx-trash icon-sm"></i></button>
-                                </form>
+                                <a href="{{ route('page.workshop.edit', $workshop->id) }}" class="btn btn-sm btn-warning"
+                                    title="Edit Workshop"><i class="icon-base bx bx-edit icon-sm"></i></a>
                             </td>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ $user->name }}</td>
-                            <td>{{ $user->email }}</td>
-                            {{-- <td><span class="badge bg-label-warning w-100">{{ $user->role->name ?? '-' }}</span></td> --}}
-                            <td>{{ $user->role->name }}</td>
-                            <td>{{ $user->department->initial ?? '-' }} - {{ $user->department->name ?? '-' }}</td>
+                            <td>{{ $workshop->ActivityStatusName ?? '-' }}</td>
+                            <td>{{ $workshop->ActivityId }}</td>
+                            <td>{{ $workshop->ActivityName }}</td>
+                            <td>{{ $workshop->wo_number->wo_number ?? '-' }}</td>
+                            <td>{{ ($workshop->ActualStart == null ? '' : \Carbon\Carbon::parse($workshop->ActualStart )->format('d-M-y')) }}</td>
+                            <td>{{ ($workshop->ActualFinish == null ? '' : \Carbon\Carbon::parse($workshop->ActualFinish )->format('d-M-y')) }}</td>
+                            <td>{{ $workshop->Holiday }}</td>
+                            <td>{{ $workshop->ActualDuration }}</td>
+                            <td>{{ $workshop->Remarks }}</td>
+                            <td>{{ $workshop->department->initial ?? '-' }} - {{ $workshop->department->name ?? '-' }}
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -84,7 +88,7 @@
                         orderable: !1,
                     }],
                     order: [
-                        [1, "asc"],
+                        [2, "desc"],
                     ],
                     //dom: '<"row mx-1"<"col-12 col-md-6 d-flex align-items-center justify-content-center justify-content-md-start gap-3"l<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start mt-md-0 mt-3"B>><"col-12 col-md-6 d-flex align-items-center justify-content-end flex-column flex-md-row pe-3 gap-md-3"f<"logtipe mb-3 mb-md-0">>>t<"row mx-2"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
                     dom: '<"row mx-1"' +
@@ -97,7 +101,7 @@
                         '<"col-sm-12 col-md-6"i>' +
                         '<"col-sm-12 col-md-6"p>' +
                         '>',
-                    responsive: !0,
+                    //responsive: !0,
 
                     language: {
                         sLengthMenu: "_MENU_",
@@ -113,10 +117,10 @@
                         }
                     }],
                     initComplete: function() {
-                        this.api().columns(4).every(function() {
+                        this.api().columns(1).every(function() {
                             var e = this,
                                 t = $(
-                                    '<select class="form-select form-select-sm"><option value=""> Role </option></select>'
+                                    '<select class="form-select form-select-sm"><option value=""> Status </option></select>'
                                 ).appendTo(".logtipe").on("change", function() {
                                     var a = $.fn.dataTable.util.escapeRegex($(this).val());
                                     e.search(a ? "^" + a + "$" : "", !0, !1).draw()
@@ -142,26 +146,5 @@
 
         }
 
-        document.querySelectorAll('.form-delete').forEach(function(form) {
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-
-                let name = form.dataset.name;
-
-                Swal.fire({
-                    title: 'Delete user data?',
-                    text: `Data "${name}" will be removed from the list`,
-                    icon: 'question',
-                    theme: 'dark',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes, delete!',
-                    cancelButtonText: 'Cancel'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
-                });
-            });
-        });
     </script>
 @endpush

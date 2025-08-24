@@ -91,10 +91,10 @@
 
 
                 <div class="card-footer d-flex justify-content-end gap-3">
+                    <a href="{{ route('page.planning.index') }}" class="btn btn-dark"><i
+                            class="icon-base bx bx-arrow-back icon-sm me-1"></i> Back to list</a>
                     <button type="submit" class="btn btn-primary"><i class="icon-base bx bx-save icon-sm me-1"></i>
                         Update</button>
-                    <a href="{{ route('page.planning.index') }}" class="btn btn-danger"><i
-                            class="icon-base bx bx-x icon-sm me-1"></i> Cancel</a>
                 </div>
             </form>
         </div>

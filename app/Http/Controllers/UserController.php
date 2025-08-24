@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
@@ -13,7 +14,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $userall = User::with('role')->get();
+        $userall = User::with(['role', 'department'])->get();
         //Log::info($userall);
         return view('page.user.index', compact('userall'));
     }
@@ -21,7 +22,8 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::all();
-        return view('page.user.create', compact('roles'));
+        $departments = Department::all();
+        return view('page.user.create', compact('roles', 'departments'));
     }
 
     public function store(Request $request)
@@ -32,6 +34,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'role_id' => 'required|exists:roles,id',
             'password' => 'required|min:6',
+            'department_id' => 'required|exists:departments,id',
         ]);
 
         try {
@@ -40,6 +43,7 @@ class UserController extends Controller
                 'email' => $request->email,
                 'role_id' => $request->role_id,
                 'password' => Hash::make($request->password),
+                'department_id' => $request->department_id,
             ]);
 
             LogHelper::record('success', 'create', 'User', $user->id, 'User added successfully.');
@@ -54,13 +58,12 @@ class UserController extends Controller
 
     public function edit($id)
     {
-
-        Log::info($id);
+        //Log::info($id);
         $userSelected = User::findOrFail($id);
-
-        Log::info($userSelected);
+        //Log::info($userSelected);
         $roles = Role::all();
-        return view('page.user.edit', compact('userSelected', 'roles'));
+        $departments = Department::all();
+        return view('page.user.edit', compact('userSelected', 'roles', 'departments'));
     }
 
     public function update(Request $request, $id)
@@ -71,6 +74,7 @@ class UserController extends Controller
             'name' => 'required|string|max:100',
             'email' => 'required|email',
             'role_id' => 'required|exists:roles,id',
+            'department_id' => 'required|exists:departments,id',
         ]);
 
         try {
@@ -79,6 +83,7 @@ class UserController extends Controller
             $user->name = $request->name;
             $user->email = $request->email;
             $user->role_id = $request->role_id;
+            $user->department_id = $request->department_id;
 
             if ($request->filled('password')) {
                 $user->password = Hash::make($request->password);
