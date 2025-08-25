@@ -226,9 +226,9 @@
                             </table>
                         </div>
                         <div class="tab-pane fade" id="navs-tab-progress" role="tabpanel">
-                            <h5 class="card-title">Special title treatment</h5>
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                            <a href="javascript:void(0);" class="btn btn-primary">Go profile</a>
+                            <h5 class="card-title">fitur On progress</h5>
+                            {{-- <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                            <a href="javascript:void(0);" class="btn btn-primary">Go profile</a> --}}
                         </div>
                     </div>
                 </div>

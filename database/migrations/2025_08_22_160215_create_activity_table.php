@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('activity', function (Blueprint $table) {
-           $table->id();
+            $table->id();
             $table->string('ActivityId')->unique();
             $table->string('ActivityName')->nullable();
             $table->integer('BLDuration')->default(0);
@@ -25,14 +25,14 @@ return new class extends Migration
             $table->integer('ActivityStatus')->default(0);
 
             $table->foreignId('department_id')
-                  ->nullable()
-                  ->constrained('departments')
-                  ->onDelete('set null');
+                ->nullable()
+                ->constrained('departments')
+                ->onDelete('set null');
 
             $table->foreignId('wo_number_id')
-                  ->nullable()
-                  ->constrained('wo_numbers')
-                  ->onDelete('set null');
+                ->nullable()
+                ->constrained('wo_numbers')
+                ->onDelete('set null');
 
             $table->string('Remarks')->nullable();
             $table->timestamps();
