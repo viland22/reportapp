@@ -17,7 +17,8 @@ class Activity extends Model
         'ActivityName',
         'BLDuration',
         'ActualDuration',
-        'Holiday',
+        'BLHoliday',
+        'ActualHoliday',
         'BLProjectStart',
         'BLProjectFinish',
         'ActualStart',
@@ -25,7 +26,8 @@ class Activity extends Model
         'ActivityStatus',
         'department_id',
         'wo_number_id',
-        'Remarks',
+        'RemarkStart',
+        'RemarkFinish',
     ];
 
     protected $appends = ['ActivityStatusName'];

@@ -52,9 +52,17 @@
                 </div>
 
                 <div class="mb-3">
+                    <label for="BLHoliday" class="form-label">BL Holiday</label>
+                    <input type="number" id="BLHoliday" name="BLHoliday" class="form-control"
+                        value="{{ old('BLHoliday') }}" required>
+
+                </div>
+                <div class="mb-3">
                     <label for="BLDuration" class="form-label">BL Duration</label>
                     <input type="number" id="BLDuration" name="BLDuration" class="form-control"
                         value="{{ old('BLDuration') }}" readonly>
+                    <small class="text-secondary">BL Duration = BL Finish - BL Start -
+                        BL Holiday.</small>
                 </div>
                 <div class="mb-3">
                     <label for="wo_number_id" class="form-label">Wo Number</label>
@@ -110,6 +118,18 @@
                 onChange: calculateDuration
             });
 
+            $("#BLHoliday").on("blur change", function() {
+                let val = $(this).val();
+                if (val === "") {
+                    $(this).val(0);
+                } else {
+                    $(this).val(parseInt(val, 10));
+                }
+
+                calculateDuration();
+            });
+
+
             function calculateDuration() {
                 let startDate = startPicker.selectedDates[0];
                 let endDate = endPicker.selectedDates[0];
@@ -121,13 +141,18 @@
                     const diffTime = endDate - startDate;
                     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
 
-                    $("#BLDuration").val(diffDays > 0 ? diffDays : 0);
+                    const BLDuration = (diffDays > 0 ? diffDays : 0) - (parseInt($("#BLHoliday").val()) || 0);
+
+                    $("#BLDuration").val(BLDuration > 0 ? BLDuration : 0);
                 } else {
-                    $("#BLDuration").val("");
+                    $("#BLDuration").val("0");
                 }
             }
 
+            calculateDuration();
 
+
+            $("#BLHoliday").val(0);
             $("#BLDuration").val(1);
         });
 

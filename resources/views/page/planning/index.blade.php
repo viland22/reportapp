@@ -33,6 +33,7 @@
                         <th>Wo Number</th>
                         <th>BL Project Start</th>
                         <th>BL Project Finish</th>
+                        <th>BL Holiday</th>
                         <th>BL Duration</th>
                         {{-- <th>Actual Start</th>
                         <th>Actual Finish</th>
@@ -62,6 +63,7 @@
                             <td>{{ $planning->wo_number->wo_number ?? '-' }}</td>
                             <td>{{ \Carbon\Carbon::parse($planning->BLProjectStart )->format('d-M-y') }}</td>
                             <td>{{ \Carbon\Carbon::parse($planning->BLProjectFinish )->format('d-M-y') }}</td>
+                            <td>{{ $planning->BLHoliday }}</td>
                             <td>{{ $planning->BLDuration }}</td>
                             {{-- <td>{{ $planning->ActualStart }}</td>
                             <td>{{ $planning->ActualFinish }}</td>

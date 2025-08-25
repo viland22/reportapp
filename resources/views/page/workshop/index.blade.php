@@ -35,9 +35,10 @@
                         <th>Wo Number</th>
                         <th>Actual Start</th>
                         <th>Actual Finish</th>
-                        <th>Holiday</th>
+                        <th>Actual Holiday</th>
                         <th>Actual Duration</th>
-                        <th>Remarks</th>
+                        <th>Remark Start</th>
+                        <th>Remark Finish</th>
                         <th>Department</th>
                     </tr>
                 </thead>
@@ -54,9 +55,10 @@
                             <td>{{ $workshop->wo_number->wo_number ?? '-' }}</td>
                             <td>{{ ($workshop->ActualStart == null ? '' : \Carbon\Carbon::parse($workshop->ActualStart )->format('d-M-y')) }}</td>
                             <td>{{ ($workshop->ActualFinish == null ? '' : \Carbon\Carbon::parse($workshop->ActualFinish )->format('d-M-y')) }}</td>
-                            <td>{{ $workshop->Holiday }}</td>
+                            <td>{{ $workshop->ActualHoliday }}</td>
                             <td>{{ $workshop->ActualDuration }}</td>
-                            <td>{{ $workshop->Remarks }}</td>
+                            <td>{{ $workshop->RemarkStart }}</td>
+                            <td>{{ $workshop->RemarkFinish }}</td>
                             <td>{{ $workshop->department->initial ?? '-' }} - {{ $workshop->department->name ?? '-' }}
                             </td>
                         </tr>

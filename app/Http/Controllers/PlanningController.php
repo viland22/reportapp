@@ -59,6 +59,7 @@ class PlanningController extends Controller
             'BLProjectStart' => 'required|date_format:d-M-y',
             'BLProjectFinish' => 'required|date_format:d-M-y',
             'BLDuration' => 'required|integer|min:1',
+            'BLHoliday' => 'required|integer|min:0',
         ]);
 
 
@@ -72,6 +73,7 @@ class PlanningController extends Controller
                 'department_id' => $request->department_id,
                 'BLProjectStart' => $start,
                 'BLProjectFinish' => $finish,
+                'BLHoliday' => $request->BLHoliday,
                 'BLDuration' => $request->BLDuration,
             ]);
 

@@ -90,6 +90,10 @@
                                         required>
                                 </div>
 
+                                <div class="mb-3">
+                                    <label for="RemarkStart" class="form-label">Remark Start</label>
+                                    <textarea type="text" id="RemarkStart" name="RemarkStart" class="form-control">{{ old('RemarkStart', $data->RemarkStart) }}</textarea>
+                                </div>
                                 <div class="card-footer d-flex justify-content-between px-0">
                                     <div>
                                         <small class="text-secondary" style="white-space: pre-line;"
@@ -137,6 +141,14 @@
                                     </div>
                                 </div>
                                 <div class="mb-3">
+                                    <label for="ActualStart" class="form-label">Actual Start</label>
+                                    <input type="text" id="ActualStart" class="form-control"
+                                        data-provider="flatpickr"
+                                        value="{{ old('ActualStart', \Carbon\Carbon::parse($data->ActualStart)->format('d-M-y')) }}"
+                                        disabled>
+                                </div>
+
+                                <div class="mb-3">
                                     <label for="ActualFinish" class="form-label">Actual Finish</label>
                                     <input type="text" id="ActualFinish" name="ActualFinish" class="form-control"
                                         data-provider="flatpickr"
@@ -144,9 +156,9 @@
                                         required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="Holiday" class="form-label">Holiday</label>
-                                    <input type="number" id="Holiday" name="Holiday" class="form-control"
-                                        value="{{ old('Holiday', $data->Holiday) }}" required>
+                                    <label for="ActualHoliday" class="form-label">Actual Holiday</label>
+                                    <input type="number" id="ActualHoliday" name="ActualHoliday" class="form-control"
+                                        value="{{ old('ActualHoliday', $data->ActualHoliday) }}" required>
 
                                 </div>
                                 <div class="mb-3">
@@ -154,11 +166,11 @@
                                     <input type="number" id="ActualDuration" name="ActualDuration" class="form-control"
                                         value="{{ old('ActualDuration', $data->ActualDuration) }}" readonly>
                                     <small class="text-secondary">Actual Duration = Actual Finish - Actual Start -
-                                        Holiday.</small>
+                                        Actual Holiday.</small>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="Remarks" class="form-label">Remark</label>
-                                    <textarea type="text" id="Remarks" name="Remarks" class="form-control">{{ old('Remarks', $data->Remarks) }}</textarea>
+                                    <label for="RemarkFinish" class="form-label">Remark Finish</label>
+                                    <textarea type="text" id="RemarkFinish" name="RemarkFinish" class="form-control">{{ old('RemarkFinish', $data->RemarkFinish) }}</textarea>
                                 </div>
                                 <div class="card-footer d-flex justify-content-between px-0">
                                     <div>
@@ -310,7 +322,7 @@
                 onChange: calculateDuration
             });
 
-            $("#Holiday").on("blur change", function() {
+            $("#ActualHoliday").on("blur change", function() {
                 let val = $(this).val();
                 if (val === "") {
                     $(this).val(0);
@@ -333,11 +345,11 @@
                     const diffTime = endDate - startDate;
                     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
 
-                    const actualDuration = (diffDays > 0 ? diffDays : 0) - (parseInt($("#Holiday").val()) || 0);
+                    const actualDuration = (diffDays > 0 ? diffDays : 0) - (parseInt($("#ActualHoliday").val()) || 0);
 
                     $("#ActualDuration").val(actualDuration > 0 ? actualDuration : 0);
                 } else {
-                    $("#ActualDuration").val("");
+                    $("#ActualDuration").val("0");
                 }
             }
 

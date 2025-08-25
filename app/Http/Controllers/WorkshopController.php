@@ -82,6 +82,7 @@ class WorkshopController extends Controller
 
                 $activity = Activity::findOrFail($id);
                 $activity->ActualStart = Carbon::parse($request->ActualStart)->format('Y-m-d');
+                $activity->RemarkStart = $request->RemarkStart;
                 $activity->ActivityStatus = 1;
                 $activity->save();
 
@@ -110,16 +111,16 @@ class WorkshopController extends Controller
             } else if ($request->action == 'update_finish') {
                 $request->validate([
                     'ActualFinish' => 'required|date_format:d-M-y',
-                    'Holiday' => 'required|integer|min:0',
+                    'ActualHoliday' => 'required|integer|min:0',
                     'ActualDuration' => 'required|integer|min:1',
                     //'Remarks' => 'required|string|max:255',
                 ]);
 
                 $activity = Activity::findOrFail($id);
                 $activity->ActualFinish = Carbon::parse($request->ActualFinish)->format('Y-m-d');
-                $activity->Holiday = $request->Holiday;
+                $activity->ActualHoliday = $request->ActualHoliday;
                 $activity->ActualDuration = $request->ActualDuration;
-                $activity->Remarks = $request->Remarks;
+                $activity->RemarkFinish = $request->RemarkFinish;
                 $activity->ActivityStatus = 2;
                 $activity->save();
 
@@ -136,9 +137,9 @@ class WorkshopController extends Controller
             } else if ($request->action == 'cancel_finish') {
                 $activity = Activity::findOrFail($id);
                 $activity->ActualFinish = null;
-                $activity->Holiday = 0;
+                $activity->ActualHoliday = 0;
                 $activity->ActualDuration = 0;
-                $activity->Remarks = null;
+                $activity->RemarkFinish = null;
                 $activity->ActivityStatus = 1;
                 $activity->save();
 
