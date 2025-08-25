@@ -45,13 +45,13 @@
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
-                                    data-bs-target="#navs-tab-planninginfo" aria-controls="navs-tab-planninginfo"
-                                    aria-selected="false" tabindex="-1">Planning Info</button>
+                                    data-bs-target="#navs-tab-progress" aria-controls="navs-tab-progress"
+                                    aria-selected="false" tabindex="-1">Progress</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
-                                    data-bs-target="#navs-tab-progress" aria-controls="navs-tab-progress"
-                                    aria-selected="false" tabindex="-1">Progress</button>
+                                    data-bs-target="#navs-tab-planninginfo" aria-controls="navs-tab-planninginfo"
+                                    aria-selected="false" tabindex="-1">Planning Info</button>
                             </li>
                         </ul>
                     </div>
@@ -184,6 +184,66 @@
                                 </div>
                             </form>
                         </div>
+                        <div class="tab-pane fade" id="navs-tab-progress" role="tabpanel">
+                            <form id="form-add-progress" action="{{ route('page.workshop.storeProgress', $data->id) }}"
+                                method="POST">
+                                @csrf
+                                <div class="d-flex gap-4 w-100 mb-4">
+                                    <div class="">
+                                        <label for="ProgressDate" class="form-label">Date</label>
+                                        <input type="text" id="ProgressDate" name="ProgressDate" class="form-control"
+                                            data-provider="flatpickr" required>
+                                    </div>
+                                    <div class="">
+                                        <label for="ProgressPercent" class="form-label">Percent</label>
+                                        <input type="number" id="ProgressPercent" name="ProgressPercent"
+                                            class="form-control" value="0">
+                                    </div>
+                                    <div class="w-50">
+                                        <label for="ProgressNote" class="form-label">Note</label>
+                                        <input type="text" name="ProgressNote" class="form-control">
+                                    </div>
+                                    <div class="mt-auto">
+                                        <button class="btn btn-primary" type="submit"><i
+                                                class="icon-base icon-16px bx bx-plus me-md-2"></i>Add Progress</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <table class="table table-sm table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Percent</th>
+                                        <th>Note</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                                @foreach ($progress as $progressdata)
+                                    <tr>
+                                        <td style="width: 10%">
+                                            {{ \Carbon\Carbon::parse($progressdata->ProgressDate)->format('d-M-y') }}</td>
+                                        <td class="text-center" style="width: 10%">{{ $progressdata->ProgressPercent }} %
+                                        </td>
+                                        <td style="width: 75%">{{ $progressdata->ProgressNote }}</td>
+                                        <td style="width: 5%">
+                                            @if (!in_array($progressdata->ProgressPercent, [0, 100]))
+                                                <form class="form-delete-progress"
+                                                    action="{{ route('page.workshop.destroyProgress', $progressdata->id) }}"
+                                                    method="POST" style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger"
+                                                        title="Delete Progress"><i
+                                                            class="icon-base bx bx-trash icon-sm"></i></button>
+                                            @endif
+                                        </td>
+
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                         <div class="tab-pane fade" id="navs-tab-planninginfo" role="tabpanel">
                             <table>
                                 <tbody>
@@ -224,11 +284,6 @@
                                     </tr>
                                 </tbody>
                             </table>
-                        </div>
-                        <div class="tab-pane fade" id="navs-tab-progress" role="tabpanel">
-                            <h5 class="card-title">fitur On progress</h5>
-                            {{-- <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                            <a href="javascript:void(0);" class="btn btn-primary">Go profile</a> --}}
                         </div>
                     </div>
                 </div>
@@ -311,6 +366,20 @@
                 $("#infoactualfinish").text("");
             }
 
+            flatpickr("#ProgressDate", {
+                dateFormat: "d-M-y",
+                defaultDate: new Date(),
+            });
+
+            $("#ProgressPercent").on("blur change", function() {
+                let val = $(this).val();
+                if (val === "") {
+                    $(this).val(0);
+                } else {
+                    $(this).val(parseInt(val, 10));
+                }
+
+            });
 
         });
 
@@ -385,6 +454,52 @@
                     });
                 });
             }
+
+            const formAddProgress = document.getElementById('form-add-progress');
+            formAddProgress.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                let hiddenInput = document.createElement("input");
+                hiddenInput.type = "hidden";
+                hiddenInput.name = "ActivityId";
+                hiddenInput.value = "{{ $data->ActivityId }}";
+                formAddProgress.appendChild(hiddenInput);
+
+                Swal.fire({
+                    title: 'Add progress activity data?',
+                    text: "Data will be added to the system",
+                    icon: 'question',
+                    theme: 'dark',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, Add progress!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        formAddProgress.submit();
+                    }
+                });
+            });
+
+            document.querySelectorAll('.form-delete-progress').forEach(function(form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    Swal.fire({
+                        title: 'Delete progress data?',
+                        text: `Data progress will be removed from the list`,
+                        icon: 'question',
+                        theme: 'dark',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, delete!',
+                        cancelButtonText: 'Cancel'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+
+                });
+            });
         });
     </script>
 @endpush

@@ -51,6 +51,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/workshop', [WorkshopController::class, 'index'])->name('page.workshop.index');
     Route::get('/workshop/edit/{id}', [WorkshopController::class, 'edit'])->name('page.workshop.edit');
     Route::put('/workshop/update/{id}', [WorkshopController::class, 'update'])->name('page.workshop.update');
+    Route::post('/workshop/storeProgresse/{id}', [WorkshopController::class, 'storeProgress'])->name('page.workshop.storeProgress');
+    Route::delete('/workshop/destroyProgress/{id}', [WorkshopController::class, 'destroyProgress'])->name('page.workshop.destroyProgress');
 
     Route::get('/log', [LogController::class, 'index'])->name('page.log.index')->middleware('role:admin');
 });
