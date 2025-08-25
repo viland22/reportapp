@@ -98,7 +98,7 @@ class WorkshopController extends Controller
                     'ActualFinish' => 'required|date_format:d-M-y',
                     'Holiday' => 'required|integer|min:1',
                     'ActualDuration' => 'required|integer|min:1',
-                    'Remarks' => 'required|string|max:255',
+                    //'Remarks' => 'required|string|max:255',
                 ]);
 
                 $activity = Activity::findOrFail($id);

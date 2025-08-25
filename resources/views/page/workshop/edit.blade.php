@@ -256,8 +256,11 @@
             });
 
             $("#Holiday").on("blur change", function() {
-                if ($(this).val() === "") {
+                let val = $(this).val();
+                if (val === "") {
                     $(this).val(0);
+                } else {
+                    $(this).val(parseInt(val, 10));
                 }
 
                 calculateDuration();
