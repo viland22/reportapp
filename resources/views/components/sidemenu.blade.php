@@ -54,12 +54,12 @@
                     <div>Data Department</div>
                 </a>
             </li>
-            <li class="menu-item {{ Request::is('client*') ? 'active' : '' }}">
+            {{-- <li class="menu-item {{ Request::is('client*') ? 'active' : '' }}">
                 <a href="/client" class="menu-link">
                     <i class="menu-icon icon-base bx bx-detail"></i>
                     <div>Data Client</div>
                 </a>
-            </li>
+            </li> --}}
             <li class="menu-header small">
                 <span class="menu-header-text">Log Data</span>
             </li>
