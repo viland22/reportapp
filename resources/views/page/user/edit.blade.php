@@ -1,5 +1,7 @@
 @extends('layouts.dashboard')
 
+@section('title', 'Edit User')
+
 @section('content')
     <div class="card">
         <div class="card-header pb-0">

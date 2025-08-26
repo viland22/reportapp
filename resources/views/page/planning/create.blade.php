@@ -1,5 +1,7 @@
 @extends('layouts.dashboard')
 
+@section('title', 'Add Planning')
+
 @section('content')
     <div class="card">
         <div class="card-header pb-0">
@@ -55,7 +57,6 @@
                     <label for="BLHoliday" class="form-label">BL Holiday</label>
                     <input type="number" id="BLHoliday" name="BLHoliday" class="form-control"
                         value="{{ old('BLHoliday') }}" required>
-
                 </div>
                 <div class="mb-3">
                     <label for="BLDuration" class="form-label">BL Duration</label>

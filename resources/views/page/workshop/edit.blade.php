@@ -1,5 +1,7 @@
 @extends('layouts.dashboard')
 
+@section('title', 'Edit Workshop')
+
 @section('content')
     <div class="card">
         <div class="card-header d-flex align-items-center justify-content-between px-5 pb-0">
@@ -140,14 +142,14 @@
                                             oninput="this.value = this.value.toUpperCase()" disabled>
                                     </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="ActualStart" class="form-label">Actual Start</label>
-                                    <input type="text" id="ActualStart" class="form-control"
-                                        data-provider="flatpickr"
-                                        value="{{ old('ActualStart', \Carbon\Carbon::parse($data->ActualStart)->format('d-M-y')) }}"
-                                        disabled>
-                                </div>
-
+                                @if ($data->ActualStart != null)
+                                    <div class="mb-3">
+                                        <label for="ActualStart" class="form-label">Actual Start</label>
+                                        <input type="text" class="form-control" data-provider="flatpickr"
+                                            value="{{ old('ActualStart', \Carbon\Carbon::parse($data->ActualStart)->format('d-M-y')) }}"
+                                            disabled>
+                                    </div>
+                                @endif
                                 <div class="mb-3">
                                     <label for="ActualFinish" class="form-label">Actual Finish</label>
                                     <input type="text" id="ActualFinish" name="ActualFinish" class="form-control"
@@ -255,47 +257,118 @@
                                 @endforeach
                                 </tbody>
                             </table>
+                            <div class="card-footer d-flex justify-content-end px-0">
+                                <a href="{{ route('page.workshop.index') }}" class="btn btn-dark"><i
+                                        class="icon-base bx bx-arrow-back icon-sm me-1"></i> Back to list</a>
+                            </div>
                         </div>
                         <div class="tab-pane fade" id="navs-tab-planninginfo" role="tabpanel">
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td class="pe-10">Activity Id</td>
-                                        <td class="px-2">:</td>
-                                        <td>{{ $data->ActivityId }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pe-10">Activity Name</td>
-                                        <td class="px-2">:</td>
-                                        <td>{{ $data->ActivityName }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pe-10">BL Project Start</td>
-                                        <td class="px-2">:</td>
-                                        <td>{{ \Carbon\Carbon::parse($data->BLProjectStart)->format('d-M-y') }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pe-10">BL Project Finish</td>
-                                        <td class="px-2">:</td>
-                                        <td>{{ \Carbon\Carbon::parse($data->BLProjectFinish)->format('d-M-y') }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pe-10">BL Duration</td>
-                                        <td class="px-2">:</td>
-                                        <td>{{ $data->BLDuration }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pe-10">Wo Number</td>
-                                        <td class="px-2">:</td>
-                                        <td>{{ $data->wo_number->wo_number }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pe-10">Department</td>
-                                        <td class="px-2">:</td>
-                                        <td>{{ $data->department->initial }} - {{ $data->department->name }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div class="row">
+                                <div class="bg-lighter rounded p-4 mb-6 position-relative">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td style="width: 200px">Activity Id</td>
+                                                <td style="width: 20px">:</td>
+                                                <td>{{ $data->ActivityId }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 200px">Activity Name</td>
+                                                <td style="width: 20px">:</td>
+                                                <td>{{ $data->ActivityName }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 200px">Wo Number</td>
+                                                <td style="width: 20px">:</td>
+                                                <td>{{ $data->wo_number->wo_number }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 200px">Department</td>
+                                                <td style="width: 20px">:</td>
+                                                <td>{{ $data->department->initial }} - {{ $data->department->name }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="bg-lighter rounded p-4 mb-6 position-relative">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td style="width: 200px">BL Project Start</td>
+                                                <td style="width: 20px">:</td>
+                                                <td>{{ \Carbon\Carbon::parse($data->BLProjectStart)->format('d-M-y') }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 200px">BL Project Finish</td>
+                                                <td style="width: 20px">:</td>
+                                                <td>{{ \Carbon\Carbon::parse($data->BLProjectFinish)->format('d-M-y') }}
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td style="width: 200px">BL Holiday</td>
+                                                <td style="width: 20px">:</td>
+                                                <td>{{ $data->BLHoliday }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 200px">BL Duration</td>
+                                                <td style="width: 20px">:</td>
+                                                <td>{{ $data->BLDuration }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="bg-lighter rounded p-4 position-relative">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td style="width: 200px">Actual Start</td>
+                                                <td style="width: 20px">:</td>
+                                                <td>
+                                                    {{ $data->ActualStart ? \Carbon\Carbon::parse($data->ActualStart)->format('d-M-y') : '-' }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 200px" style="vertical-align: top;">Remark Start</td>
+                                                <td style="width: 10px" style="vertical-align: top;">:</td>
+                                                <td style="vertical-align: top;">
+                                                    {{ trim($data->RemarkStart) }}
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td style="width: 200px">Actual Finish</td>
+                                                <td style="width: 20px">:</td>
+                                                <td style="vertical-align: top;">
+                                                    {{ $data->ActualFinish ? \Carbon\Carbon::parse($data->ActualFinish)->format('d-M-y') : '-' }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 200px" style="vertical-align: top;">Remark Finish</td>
+                                                <td style="width: 10px" style="vertical-align: top;">:</td>
+                                                <td style="vertical-align: top;">
+                                                    {{ $data->RemarkFinish }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td style="width: 200px">Actual Holiday</td>
+                                                <td style="width: 20px">:</td>
+                                                <td>{{ $data->ActualHoliday }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 200px">Actual Duration</td>
+                                                <td style="width: 20px">:</td>
+                                                <td>{{ $data->ActualDuration }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="card-footer d-flex justify-content-end px-0">
+                                <a href="{{ route('page.workshop.index') }}" class="btn btn-dark"><i
+                                        class="icon-base bx bx-arrow-back icon-sm me-1"></i> Back to list</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -345,7 +418,8 @@
                     const diffTime = endDate - startDate;
                     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
 
-                    const actualDuration = (diffDays > 0 ? diffDays : 0) - (parseInt($("#ActualHoliday").val()) || 0);
+                    const actualDuration = (diffDays > 0 ? diffDays : 0) - (parseInt($("#ActualHoliday").val()) ||
+                        0);
 
                     $("#ActualDuration").val(actualDuration > 0 ? actualDuration : 0);
                 } else {

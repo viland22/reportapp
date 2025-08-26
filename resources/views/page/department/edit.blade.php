@@ -1,4 +1,5 @@
 @extends('layouts.dashboard')
+@section('title', 'Edit Department')
 
 @section('content')
     <div class="card">

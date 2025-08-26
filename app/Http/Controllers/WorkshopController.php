@@ -112,7 +112,7 @@ class WorkshopController extends Controller
                 $request->validate([
                     'ActualFinish' => 'required|date_format:d-M-y',
                     'ActualHoliday' => 'required|integer|min:0',
-                    'ActualDuration' => 'required|integer|min:1',
+                    'ActualDuration' => 'required|integer|min:0',
                     //'Remarks' => 'required|string|max:255',
                 ]);
 

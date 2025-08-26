@@ -58,7 +58,7 @@ class PlanningController extends Controller
             'department_id' => 'required|exists:departments,id',
             'BLProjectStart' => 'required|date_format:d-M-y',
             'BLProjectFinish' => 'required|date_format:d-M-y',
-            'BLDuration' => 'required|integer|min:1',
+            'BLDuration' => 'required|integer|min:0',
             'BLHoliday' => 'required|integer|min:0',
         ]);
 
@@ -134,7 +134,8 @@ class PlanningController extends Controller
                 'department_id' => 'required|exists:departments,id',
                 'BLProjectStart' => 'required|date_format:d-M-y',
                 'BLProjectFinish' => 'required|date_format:d-M-y',
-                'BLDuration' => 'required|integer|min:1',
+                'BLHoliday' => 'required|integer|min:0',
+                'BLDuration' => 'required|integer|min:0',
             ]);
             $activity = Activity::findOrFail($id);
             Log::info('Activity found: ' . $activity->ActivityName);
@@ -144,6 +145,7 @@ class PlanningController extends Controller
             $activity->department_id = $request->department_id;
             $activity->BLProjectStart = Carbon::parse($request->BLProjectStart)->format('Y-m-d');
             $activity->BLProjectFinish = Carbon::parse($request->BLProjectFinish)->format('Y-m-d');
+            $activity->BLHoliday = $request->BLHoliday;
             $activity->BLDuration = $request->BLDuration;
 
             $activity->save();
