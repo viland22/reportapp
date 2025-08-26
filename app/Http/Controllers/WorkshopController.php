@@ -26,6 +26,7 @@ class WorkshopController extends Controller
             $counts = Activity::select('ActivityStatus', DB::raw('count(*) as total'))
                 ->groupBy('ActivityStatus')
                 ->pluck('total', 'ActivityStatus');
+
         } else {
             $data = Activity::with(['department', 'wo_number'])
                 ->where('department_id', $deptAuth)
@@ -35,9 +36,9 @@ class WorkshopController extends Controller
                 ->where('department_id', $deptAuth)
                 ->groupBy('ActivityStatus')
                 ->pluck('total', 'ActivityStatus');
+
         }
 
-        // biar aman, kalau status tertentu tidak ada hasil, kasih default 0
         $statusCounts = [
             'not_started' => $counts[0] ?? 0,
             'in_progress' => $counts[1] ?? 0,
