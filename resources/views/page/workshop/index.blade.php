@@ -49,12 +49,16 @@
                                 <a href="{{ route('page.workshop.edit', $workshop->id) }}" class="btn btn-sm btn-warning"
                                     title="Edit Workshop"><i class="icon-base bx bx-edit icon-sm"></i></a>
                             </td>
-                            <td>{{ $workshop->ActivityStatusName ?? '-' }}</td>
+                            <td
+                                class="{{ $workshop->ActivityStatus === 0 ? 'text-danger' : ($workshop->ActivityStatus === 1 ? 'text-warning' : 'text-success') }}">
+                                {{ $workshop->ActivityStatusName ?? '-' }}</td>
                             <td>{{ $workshop->ActivityId }}</td>
                             <td>{{ $workshop->ActivityName }}</td>
                             <td>{{ $workshop->wo_number->wo_number ?? '-' }}</td>
-                            <td>{{ ($workshop->ActualStart == null ? '' : \Carbon\Carbon::parse($workshop->ActualStart )->format('d-M-y')) }}</td>
-                            <td>{{ ($workshop->ActualFinish == null ? '' : \Carbon\Carbon::parse($workshop->ActualFinish )->format('d-M-y')) }}</td>
+                            <td>{{ $workshop->ActualStart == null ? '' : \Carbon\Carbon::parse($workshop->ActualStart)->format('d-M-y') }}
+                            </td>
+                            <td>{{ $workshop->ActualFinish == null ? '' : \Carbon\Carbon::parse($workshop->ActualFinish)->format('d-M-y') }}
+                            </td>
                             <td>{{ $workshop->ActualHoliday }}</td>
                             <td>{{ $workshop->ActualDuration }}</td>
                             <td>{{ $workshop->RemarkStart }}</td>
@@ -147,6 +151,5 @@
                 }, 300)
 
         }
-
     </script>
 @endpush

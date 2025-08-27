@@ -10,6 +10,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\PlanningController;
 use App\Http\Controllers\WorkshopController;
+use App\Http\Controllers\ReportController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -53,6 +54,8 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/workshop/update/{id}', [WorkshopController::class, 'update'])->name('page.workshop.update');
     Route::post('/workshop/storeProgresse/{id}', [WorkshopController::class, 'storeProgress'])->name('page.workshop.storeProgress');
     Route::delete('/workshop/destroyProgress/{id}', [WorkshopController::class, 'destroyProgress'])->name('page.workshop.destroyProgress');
+
+    Route::get('/reportactivity', [ReportController::class, 'index'])->name('page.reportactivity.index');
 
     Route::get('/log', [LogController::class, 'index'])->name('page.log.index')->middleware('role:admin');
 });

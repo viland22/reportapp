@@ -53,6 +53,7 @@
     <script src="{{ asset('vendor/js/template-customizer.js') }}"></script>
     <script src="{{ asset('js/config.js') }}"></script>
     {{-- <script src="{{ asset('js/forms-selects.js') }}"></script> --}}
+
 </head>
 
 <body>
@@ -114,6 +115,51 @@
     {{-- <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script> --}}
+
+    <!-- layouts/app.blade.php -->
+    <script type="module">
+        import {
+            initializeApp
+        } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+        import {
+            getAnalytics
+        } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-analytics.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyD66H0kdOAc3pRnWbqhl-yT44VnbYn-xtA",
+            authDomain: "reportapp-sis.firebaseapp.com",
+            projectId: "reportapp-sis",
+            storageBucket: "reportapp-sis.firebasestorage.app",
+            messagingSenderId: "303909277727",
+            appId: "1:303909277727:web:4a634e43fe8993cab7c52a",
+            measurementId: "G-TEZ85KM8CY"
+        };
+
+        // Init Firebase
+        window.firebaseApp = initializeApp(firebaseConfig);
+        window.firebaseAnalytics = getAnalytics(window.firebaseApp);
+        //console.log('Firebase initialized');
+    </script>
+
+    @if (session()->pull('login_success'))
+        <script type="module">
+            import {
+                setUserId,
+                logEvent
+            } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-analytics.js";
+
+            const analytics = window.firebaseAnalytics;
+
+            setUserId(analytics, "{{ Auth::user()->id }}");
+
+            logEvent(analytics, 'login', {
+                method: 'email'
+            });
+            //console.log('Login event sent to Firebase Analytics');
+        </script>
+    @endif
+
+
 
     @stack('scripts')
     @yield('scripts')

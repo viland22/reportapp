@@ -29,13 +29,7 @@
                     @foreach ($data as $index => $log)
                         <tr>
                             <td>{{ $index + 1 }}</td>
-                            <td>
-                                {{-- <span
-                                    class="badge w-100 {{ $log->tipe === 'error' ? 'bg-label-danger' : 'bg-label-success' }}">
-                                    {{ $log->tipe }}
-                                </span> --}}
-                                {{ $log->tipe }}
-                            </td>
+                            <td class="{{ $log->tipe == 'success' ? 'text-success' : 'text-danger' }}">{{ $log->tipe }}</td>
                             <td>{{ $log->created_at }}</td>
                             <td>{{ $log->user->name ?? '-' }}</td>
                             <td>{{ $log->action }}</td>

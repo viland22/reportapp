@@ -1,60 +1,60 @@
 @extends('layouts.dashboard')
 
-@section('title', 'User')
+@section('title', 'Report All Activity')
 
 @section('content')
+
     <div class="card">
         <div class="card-header d-flex align-items-center justify-content-between px-5 pb-0">
-            <h5 class="card-title">Master User</h5>
-            <div class="card-actions">
-                <a href="{{ route('page.user.create') }}" class="btn btn-primary"><i
-                        class="icon-base icon-16px bx bx-plus me-md-2"></i> <span class="d-md-inline-block d-none">Add
-                        User</span></a>
-            </div>
+            <h5 class="card-title">Report All Activity</h5>
         </div>
         <hr />
-        @if (session('success'))
-            <div class="alert alert-success mx-2">
-                {{ session('success') }}
-            </div>
-        @endif
-        @if (session('error'))
-            <div class="alert alert-danger mx-2">
-                {{ session('error') }}
-            </div>
-        @endif
+
         <div class="card-datatable text-nowrap table-responsive">
-            <table class="table table-sm table-striped table-hover table-responsive">
+            <table class="table table-sm table-striped table-hover table-responsive text-sm" style="font-size: small">
                 <thead>
                     <tr>
-                        <th style="width:10px">Action</th>
-                        <th>No</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Department</th>
+                        <th style="font-size: smaller; font-weight:bold">Activity Id</th>
+                        <th style="font-size: smaller; font-weight:bold">Activity Name</th>
+                        <th style="font-size: smaller; font-weight:bold">Wo Number</th>
+                        <th style="font-size: smaller; font-weight:bold">Department</th>
+                        <th style="font-size: smaller; font-weight:bold">Status</th>
+                        <th style="font-size: smaller; font-weight:bold">Progress %</th>
+                        <th style="font-size: smaller; font-weight:bold">BL Project Start</th>
+                        <th style="font-size: smaller; font-weight:bold">BL Project Finish</th>
+                        <th style="font-size: smaller; font-weight:bold">BL Holiday</th>
+                        <th style="font-size: smaller; font-weight:bold">BL Duration</th>
+                        <th style="font-size: smaller; font-weight:bold">Actual Start</th>
+                        <th style="font-size: smaller; font-weight:bold">Actual Finish</th>
+                        <th style="font-size: smaller; font-weight:bold">Actual Holiday</th>
+                        <th style="font-size: smaller; font-weight:bold">Actual Duration</th>
+                        <th style="font-size: smaller; font-weight:bold">Remark Start</th>
+                        <th style="font-size: smaller; font-weight:bold">Remark Finish</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($userall as $index => $user)
+                    @foreach ($data as $index => $planning)
                         <tr>
-                            <td>
-                                <a href="{{ route('page.user.edit', $user->id) }}" class="btn btn-sm btn-warning"
-                                    title="Edit User"><i class="icon-base bx bx-edit icon-sm"></i></a>
-                                <form class="form-delete" data-name="{{ $user->name }}" action="{{ route('page.user.destroy', $user->id) }}"
-                                    method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger" title="Delete User"><i
-                                            class="icon-base bx bx-trash icon-sm"></i></button>
-                                </form>
+
+                            <td>{{ $planning->ActivityId }}</td>
+                            <td>{{ $planning->ActivityName }}</td>
+                            <td>{{ $planning->wo_number->wo_number ?? '-' }}</td>
+                            <td>{{ $planning->department->initial ?? '-' }} - {{ $planning->department->name ?? '-' }}</td>
+                            <td
+                                class="{{ $planning->ActivityStatus === 0 ? 'text-danger' : ($planning->ActivityStatus === 1 ? 'text-warning' : 'text-success') }}">
+                                {{ $planning->ActivityStatusName ?? '-' }}</td>
+                            <td class="text-center">{{ $planning->ProgressPercent ?? '0' }}%</td>
+                            <td>{{ \Carbon\Carbon::parse($planning->BLProjectStart)->format('d-M-y') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($planning->BLProjectFinish)->format('d-M-y') }}</td>
+                            <td class="text-center">{{ $planning->BLHoliday }}</td>
+                            <td class="text-center">{{ $planning->BLDuration }}</td>
+                            <td>{{ $planning->ActualStart }}</td>
+                            <td>{{ $planning->ActualFinish }}</td>
+                            <td class="text-center">{{ $planning->ActualHoliday }}</td>
+                            <td class="text-center">{{ $planning->ActualDuration }}</td>
+                            <td>{{ $planning->RemarkStart }}</td>
+                            <td>{{ $planning->RemarkFinish }}</td>
                             </td>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ $user->name }}</td>
-                            <td>{{ $user->email }}</td>
-                            {{-- <td><span class="badge bg-label-warning w-100">{{ $user->role->name ?? '-' }}</span></td> --}}
-                            <td class="{{ $user->role->name == 'admin' ? 'text-success' : 'text-primary' }}">{{ $user->role->name }}</td>
-                            <td>{{ $user->department->initial ?? '-' }} - {{ $user->department->name ?? '-' }}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -77,14 +77,8 @@
                         [10, 25, 50, -1],
                         [10, 25, 50, "All"]
                     ],
-                    columnDefs: [{
-                        targets: 0,
-                        title: "Actions",
-                        searchable: !1,
-                        orderable: !1,
-                    }],
                     order: [
-                        [1, "asc"],
+                        [0, "desc"],
                     ],
                     //dom: '<"row mx-1"<"col-12 col-md-6 d-flex align-items-center justify-content-center justify-content-md-start gap-3"l<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start mt-md-0 mt-3"B>><"col-12 col-md-6 d-flex align-items-center justify-content-end flex-column flex-md-row pe-3 gap-md-3"f<"logtipe mb-3 mb-md-0">>>t<"row mx-2"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
                     dom: '<"row mx-1"' +
@@ -97,7 +91,7 @@
                         '<"col-sm-12 col-md-6"i>' +
                         '<"col-sm-12 col-md-6"p>' +
                         '>',
-                    responsive: !0,
+                    //responsive: !0,
 
                     language: {
                         sLengthMenu: "_MENU_",
@@ -116,7 +110,7 @@
                         this.api().columns(4).every(function() {
                             var e = this,
                                 t = $(
-                                    '<select class="form-select form-select-sm"><option value=""> Role </option></select>'
+                                    '<select class="form-select form-select-sm"><option value=""> Status </option></select>'
                                 ).appendTo(".logtipe").on("change", function() {
                                     var a = $.fn.dataTable.util.escapeRegex($(this).val());
                                     e.search(a ? "^" + a + "$" : "", !0, !1).draw()
@@ -141,27 +135,5 @@
                 }, 300)
 
         }
-
-        document.querySelectorAll('.form-delete').forEach(function(form) {
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-
-                let name = form.dataset.name;
-
-                Swal.fire({
-                    title: 'Delete user data?',
-                    text: `Data "${name}" will be removed from the list`,
-                    icon: 'question',
-                    theme: 'dark',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes, delete!',
-                    cancelButtonText: 'Cancel'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
-                });
-            });
-        });
     </script>
 @endpush

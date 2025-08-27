@@ -24,10 +24,11 @@ class AuthController extends Controller
             'password' => 'required|min:6',
         ]);
 
-        $remember = $request->filled('remember'); // cek apakah checkbox dicentang
+        $remember = $request->filled('remember');
 
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
+            session()->put('login_success', true);
             return redirect()->intended('/');
         }
 

@@ -184,7 +184,7 @@
                     </div>
                 </div>
                 <div class="card-datatable">
-                    <table class="table table-sm table-striped table-hover table-responsive">
+                    <table class="table table-sm table-striped table-hover table-responsive" id="in-progress-table">
                         <thead>
                             <tr>
                                 <th>Activity Id</th>
@@ -229,7 +229,65 @@
     <script>
         window.addEventListener('DOMContentLoaded', function() {
             piechart();
+            setDatatable();
         });
+
+        function setDatatable() {
+            var a, e = $("#in-progress-table");
+            e.length && (a = e.DataTable({
+                    lengthMenu: [
+                        [10, 25, 50, -1],
+                        [10, 25, 50, "All"]
+                    ],
+                    columnDefs: [{
+                        targets: 0,
+                        title: "Actions",
+                        searchable: !1,
+                        orderable: !1,
+                    }],
+                    order: [
+                        [0, "asc"],
+                    ],
+                    dom: '<"row mx-1"' +
+                        '<"col-12 col-md-6 d-flex align-items-center justify-content-md-start gap-3"l>' +
+                        '<"col-12 col-md-6 d-flex align-items-center justify-content-end flex-column flex-md-row pe-3 gap-md-3"' +
+                        'fB' +
+                        '>' +
+                        '>t' +
+                        '<"row mx-2"' +
+                        '<"col-sm-12 col-md-6"i>' +
+                        '<"col-sm-12 col-md-6"p>' +
+                        '>',
+                    responsive: !0,
+
+                    language: {
+                        sLengthMenu: "_MENU_",
+                        search: "",
+                        searchPlaceholder: "Search ..."
+                    },
+                    buttons: [{
+                        extend: 'excelHtml5',
+                        text: 'Export Excel',
+                        className: 'btn btn-sm btn-success',
+                        exportOptions: {
+                            columns: ':not(:first-child)'
+                        }
+                    }],
+
+                })),
+                e.on("draw.dt", function() {
+                    [].slice.call(document.queryselectorall('[data-bs-toggle="tooltip"]')).map(function(a) {
+                        return new bootstrap.tooltip(a, {
+                            boundary: document.body
+                        })
+                    })
+                }),
+                setTimeout(() => {
+                    $(".dataTables_filter .form-control").addClass("form-control-sm"),
+                        $(".dataTables_length .form-select").addClass("form-select-sm")
+                }, 300)
+
+        }
 
         function piechart() {
             var options = {
@@ -263,5 +321,36 @@
             var chart = new ApexCharts(document.querySelector("#piechart"), options);
             chart.render();
         }
+    </script>
+    <script type="module">
+        import {
+            initializeApp
+        } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+        import {
+            getAnalytics,
+            setUserId,
+            logEvent
+        } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-analytics.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyD66H0kdOAc3pRnWbqhl-yT44VnbYn-xtA",
+            authDomain: "reportapp-sis.firebaseapp.com",
+            projectId: "reportapp-sis",
+            storageBucket: "reportapp-sis.firebasestorage.app",
+            messagingSenderId: "303909277727",
+            appId: "1:303909277727:web:4a634e43fe8993cab7c52a",
+            measurementId: "G-TEZ85KM8CY"
+        };
+
+        // Init Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+
+        setUserId(analytics, "{{ $user->id }}");
+
+        // Log event login
+        logEvent(analytics, 'login', {
+            method: 'email'
+        });
     </script>
 @endpush

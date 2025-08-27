@@ -24,6 +24,7 @@
                 <div>Dashboard</div>
             </a>
         </li>
+
         @if ($user->role->name === 'admin' || $user->department->initial === 'PPIC')
             <li class="menu-item {{ Request::is('planning*') ? 'active' : '' }}">
                 <a href="/planning" class="menu-link">
@@ -38,6 +39,17 @@
                 <div>Workshop</div>
             </a>
         </li>
+
+        <li class="menu-header small">
+            <span class="menu-header-text">Report Data</span>
+        </li>
+        <li class="menu-item {{ Request::is('reportactivity*') ? 'active' : '' }}">
+            <a href="/reportactivity" class="menu-link">
+                <i class="menu-icon icon-base bx bx-file"></i>
+                <div>All Activity Report</div>
+            </a>
+        </li>
+
         @if ($user->role->name === 'admin')
             <li class="menu-header small">
                 <span class="menu-header-text">Master Data</span>
@@ -54,12 +66,6 @@
                     <div>Data Department</div>
                 </a>
             </li>
-            {{-- <li class="menu-item {{ Request::is('client*') ? 'active' : '' }}">
-                <a href="/client" class="menu-link">
-                    <i class="menu-icon icon-base bx bx-detail"></i>
-                    <div>Data Client</div>
-                </a>
-            </li> --}}
             <li class="menu-header small">
                 <span class="menu-header-text">Log Data</span>
             </li>

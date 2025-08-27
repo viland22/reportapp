@@ -81,7 +81,7 @@ class DashboardController extends Controller
         // Log::info($statusCounts);
         // Log::info($total);
         // Log::info($percentages);
-        Log::info($progress);
+        // Log::info($progress);
         return view('page.dashboard', compact('data', 'statusCounts', 'total', 'percentages', 'progress'));
     }
 }
