@@ -155,7 +155,7 @@
             logEvent(analytics, 'login', {
                 method: 'email'
             });
-            //console.log('Login event sent to Firebase Analytics');
+
         </script>
     @endif
 

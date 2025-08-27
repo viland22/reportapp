@@ -175,7 +175,7 @@
         </div>
         <!--/ Pie chart -->
 
-        <!-- In Progress vehicles Table -->
+        <!-- In Progress activity Table -->
         <div class="col-12 order-5">
             <div class="card">
                 <div class="card-header d-flex align-items-center justify-content-between">
@@ -220,7 +220,7 @@
                 </div>
             </div>
         </div>
-        <!--/ On route vehicles Table -->
+        <!--/ In Progress activity Table -->
     </div>
 
 @endsection
@@ -322,7 +322,7 @@
             chart.render();
         }
     </script>
-    <script type="module">
+    {{-- <script type="module">
         import {
             initializeApp
         } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
@@ -352,5 +352,5 @@
         logEvent(analytics, 'login', {
             method: 'email'
         });
-    </script>
+    </script> --}}
 @endpush
