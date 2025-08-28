@@ -116,7 +116,7 @@
                     @else
                         <ul class="timeline mb-0">
                             @foreach ($progress as $progressdata)
-                                <li class="timeline-item timeline-item-transparent">
+                                <li class="timeline-item timeline-item-transparent" style="{{ $loop->last ? 'border-inline: none;' : '' }}">
                                     <span
                                         class="timeline-point timeline-point-{{ $progressdata->ProgressPercent == 0 ? 'danger' : ($progressdata->ProgressPercent == 100 ? 'success' : 'warning') }}"></span>
                                     <div class="timeline-event">
