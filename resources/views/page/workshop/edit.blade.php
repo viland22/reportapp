@@ -47,6 +47,11 @@
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                                    data-bs-target="#navs-tab-upload" aria-controls="navs-tab-upload" aria-selected="false"
+                                    tabindex="-1">Upload Image</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
                                     data-bs-target="#navs-tab-progress" aria-controls="navs-tab-progress"
                                     aria-selected="false" tabindex="-1">Progress</button>
                             </li>
@@ -61,142 +66,183 @@
                 <div class="card-body">
                     <div class="tab-content p-0">
                         <div class="tab-pane fade active show" id="navs-tab-actualstart" role="tabpanel">
-                            <form id="form-edit-start"action="{{ route('page.workshop.update', $data->id) }}"
-                                method="POST">
-                                @csrf
-                                @method('PUT')
-                                <div class="d-flex gap-4 mb-3">
-                                    <div class="">
-                                        <label for="ActivityId" class="form-label">Activity Id</label>
-                                        <input type="text" name="ActivityId" class="form-control"
-                                            value="{{ old('ActivityId', $data->ActivityId) }}"
-                                            oninput="this.value = this.value.toUpperCase()" disabled>
+                            <div class="bg-lighter rounded p-4 position-relative mb-2">
+                                <form id="form-edit-start" action="{{ route('page.workshop.update', $data->id) }}"
+                                    method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="d-flex gap-4 mb-3">
+                                        <div class="">
+                                            <label for="ActivityId" class="form-label">Activity Id</label>
+                                            <input type="text" name="ActivityId" class="form-control"
+                                                value="{{ old('ActivityId', $data->ActivityId) }}"
+                                                oninput="this.value = this.value.toUpperCase()" disabled>
+                                        </div>
+                                        <div class="w-100">
+                                            <label for="ActivityName" class="form-label">Activity Name</label>
+                                            <input type="text" name="ActivityName" class="form-control"
+                                                value="{{ old('ActivityName', $data->ActivityName) }}" disabled>
+                                        </div>
+                                        <div class="">
+                                            <label for="wo_number" class="form-label">Wo Number</label>
+                                            <input type="text" name="wo_number" class="form-control"
+                                                value="{{ old('wo_number', $data->wo_number->wo_number) }}"
+                                                oninput="this.value = this.value.toUpperCase()" disabled>
+                                        </div>
                                     </div>
-                                    <div class="w-100">
-                                        <label for="ActivityName" class="form-label">Activity Name</label>
-                                        <input type="text" name="ActivityName" class="form-control"
-                                            value="{{ old('ActivityName', $data->ActivityName) }}" disabled>
-                                    </div>
-                                    <div class="">
-                                        <label for="wo_number" class="form-label">Wo Number</label>
-                                        <input type="text" name="wo_number" class="form-control"
-                                            value="{{ old('wo_number', $data->wo_number->wo_number) }}"
-                                            oninput="this.value = this.value.toUpperCase()" disabled>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="ActualStart" class="form-label">Actual Start</label>
-                                    <input type="text" id="ActualStart" name="ActualStart" class="form-control"
-                                        data-provider="flatpickr"
-                                        value="{{ old('ActualStart', \Carbon\Carbon::parse($data->ActualStart)->format('d-M-y')) }}"
-                                        required>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="RemarkStart" class="form-label">Remark Start</label>
-                                    <textarea type="text" id="RemarkStart" name="RemarkStart" class="form-control">{{ old('RemarkStart', $data->RemarkStart) }}</textarea>
-                                </div>
-                                <div class="card-footer d-flex justify-content-between px-0">
-                                    <div>
-                                        <small class="text-secondary" style="white-space: pre-line;"
-                                            id="infoactualstart"></small>
-                                    </div>
-                                    <div class="d-flex gap-4">
-                                        <a href="{{ route('page.workshop.index') }}" class="btn btn-dark"><i
-                                                class="icon-base bx bx-arrow-back icon-sm me-1"></i> Back to list</a>
-                                        @if ($data->ActivityStatus == 0)
-                                            <button type="submit" data-action="update" class="btn btn-primary"><i
-                                                    class="icon-base bx bx-save icon-sm me-1"></i>
-                                                Update Actual Start</button>
-                                        @endif
-                                        @if ($data->ActivityStatus == 1)
-                                            <button type="submit" data-action="cancel" class="btn btn-danger"><i
-                                                    class="icon-base bx bx-x icon-sm me-1"></i>
-                                                Cancel Actual Start</button>
-                                        @endif
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="tab-pane fade" id="navs-tab-actualfinish" role="tabpanel">
-                            <form id="form-edit-finish" action="{{ route('page.workshop.update', $data->id) }}"
-                                method="POST">
-                                @csrf
-                                @method('PUT')
-                                <div class="d-flex gap-4 mb-3">
-                                    <div class="">
-                                        <label for="ActivityId" class="form-label">Activity Id</label>
-                                        <input type="text" name="ActivityId" class="form-control"
-                                            value="{{ old('ActivityId', $data->ActivityId) }}"
-                                            oninput="this.value = this.value.toUpperCase()" disabled>
-                                    </div>
-                                    <div class="w-100">
-                                        <label for="ActivityName" class="form-label">Activity Name</label>
-                                        <input type="text" name="ActivityName" class="form-control"
-                                            value="{{ old('ActivityName', $data->ActivityName) }}" disabled>
-                                    </div>
-                                    <div class="">
-                                        <label for="wo_number" class="form-label">Wo Number</label>
-                                        <input type="text" name="wo_number" class="form-control"
-                                            value="{{ old('wo_number', $data->wo_number->wo_number) }}"
-                                            oninput="this.value = this.value.toUpperCase()" disabled>
-                                    </div>
-                                </div>
-                                @if ($data->ActualStart != null)
                                     <div class="mb-3">
                                         <label for="ActualStart" class="form-label">Actual Start</label>
-                                        <input type="text" class="form-control" data-provider="flatpickr"
+                                        <input type="text" id="ActualStart" name="ActualStart" class="form-control"
+                                            data-provider="flatpickr"
                                             value="{{ old('ActualStart', \Carbon\Carbon::parse($data->ActualStart)->format('d-M-y')) }}"
-                                            disabled>
+                                            required>
                                     </div>
-                                @endif
-                                <div class="mb-3">
-                                    <label for="ActualFinish" class="form-label">Actual Finish</label>
-                                    <input type="text" id="ActualFinish" name="ActualFinish" class="form-control"
-                                        data-provider="flatpickr"
-                                        value="{{ old('ActualFinish', \Carbon\Carbon::parse($data->ActualFinish)->format('d-M-y')) }}"
-                                        required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="ActualHoliday" class="form-label">Actual Holiday</label>
-                                    <input type="number" id="ActualHoliday" name="ActualHoliday" class="form-control"
-                                        value="{{ old('ActualHoliday', $data->ActualHoliday) }}" required>
 
-                                </div>
-                                <div class="mb-3">
-                                    <label for="ActualDuration" class="form-label">Actual Duration</label>
-                                    <input type="number" id="ActualDuration" name="ActualDuration" class="form-control"
-                                        value="{{ old('ActualDuration', $data->ActualDuration) }}" readonly>
-                                    <small class="text-secondary">Actual Duration = Actual Finish - Actual Start -
-                                        Actual Holiday.</small>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="RemarkFinish" class="form-label">Remark Finish</label>
-                                    <textarea type="text" id="RemarkFinish" name="RemarkFinish" class="form-control">{{ old('RemarkFinish', $data->RemarkFinish) }}</textarea>
-                                </div>
-                                <div class="card-footer d-flex justify-content-between px-0">
-                                    <div>
-                                        <small class="text-secondary" style="white-space: pre-line;"
-                                            id="infoactualfinish"></small>
+                                    <div class="mb-3">
+                                        <label for="RemarkStart" class="form-label">Remark Start</label>
+                                        <textarea type="text" id="RemarkStart" name="RemarkStart" class="form-control">{{ old('RemarkStart', $data->RemarkStart) }}</textarea>
                                     </div>
-                                    <div class="d-flex gap-4">
-                                        <a href="{{ route('page.workshop.index') }}" class="btn btn-dark"><i
-                                                class="icon-base bx bx-arrow-back icon-sm me-1"></i> Back to list</a>
-
-                                        @if ($data->ActivityStatus == 1)
-                                            <button type="submit" data-action="update" class="btn btn-primary"><i
-                                                    class="icon-base bx bx-save icon-sm me-1"></i>
-                                                Update Actual Finish</button>
-                                        @endif
-
-                                        @if ($data->ActivityStatus == 2)
-                                            <button type="submit" data-action="cancel" class="btn btn-danger"><i
-                                                    class="icon-base bx bx-x icon-sm me-1"></i>
-                                                Cancel Actual Finish</button>
-                                        @endif
+                                    <div class="card-footer d-flex justify-content-between px-0">
+                                        <div>
+                                            <small class="text-secondary" style="white-space: pre-line;"
+                                                id="infoactualstart"></small>
+                                        </div>
+                                        <div class="d-flex gap-4">
+                                            @if ($data->ActivityStatus == 0)
+                                                <button type="submit" data-action="update" class="btn btn-primary"><i
+                                                        class="icon-base bx bx-save icon-sm me-1"></i>
+                                                    Update Actual Start</button>
+                                            @endif
+                                            @if ($data->ActivityStatus == 1)
+                                                <button type="submit" data-action="cancel" class="btn btn-danger"><i
+                                                        class="icon-base bx bx-x icon-sm me-1"></i>
+                                                    Cancel Actual Start</button>
+                                            @endif
+                                        </div>
                                     </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="navs-tab-actualfinish" role="tabpanel">
+                            <div class="bg-lighter rounded p-4 position-relative mb-2">
+                                <form id="form-edit-finish" action="{{ route('page.workshop.update', $data->id) }}"
+                                    method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="d-flex gap-4 mb-3">
+                                        <div class="">
+                                            <label for="ActivityId" class="form-label">Activity Id</label>
+                                            <input type="text" name="ActivityId" class="form-control"
+                                                value="{{ old('ActivityId', $data->ActivityId) }}"
+                                                oninput="this.value = this.value.toUpperCase()" disabled>
+                                        </div>
+                                        <div class="w-100">
+                                            <label for="ActivityName" class="form-label">Activity Name</label>
+                                            <input type="text" name="ActivityName" class="form-control"
+                                                value="{{ old('ActivityName', $data->ActivityName) }}" disabled>
+                                        </div>
+                                        <div class="">
+                                            <label for="wo_number" class="form-label">Wo Number</label>
+                                            <input type="text" name="wo_number" class="form-control"
+                                                value="{{ old('wo_number', $data->wo_number->wo_number) }}"
+                                                oninput="this.value = this.value.toUpperCase()" disabled>
+                                        </div>
+                                    </div>
+                                    @if ($data->ActualStart != null)
+                                        <div class="mb-3">
+                                            <label for="ActualStart" class="form-label">Actual Start</label>
+                                            <input type="text" class="form-control" data-provider="flatpickr"
+                                                value="{{ old('ActualStart', \Carbon\Carbon::parse($data->ActualStart)->format('d-M-y')) }}"
+                                                disabled>
+                                        </div>
+                                    @endif
+                                    <div class="mb-3">
+                                        <label for="ActualFinish" class="form-label">Actual Finish</label>
+                                        <input type="text" id="ActualFinish" name="ActualFinish" class="form-control"
+                                            data-provider="flatpickr"
+                                            value="{{ old('ActualFinish', \Carbon\Carbon::parse($data->ActualFinish)->format('d-M-y')) }}"
+                                            required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="ActualHoliday" class="form-label">Actual Holiday</label>
+                                        <input type="number" id="ActualHoliday" name="ActualHoliday"
+                                            class="form-control" value="{{ old('ActualHoliday', $data->ActualHoliday) }}"
+                                            required>
+
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="ActualDuration" class="form-label">Actual Duration</label>
+                                        <input type="number" id="ActualDuration" name="ActualDuration"
+                                            class="form-control"
+                                            value="{{ old('ActualDuration', $data->ActualDuration) }}" readonly>
+                                        <small class="text-secondary">Actual Duration = Actual Finish - Actual Start -
+                                            Actual Holiday.</small>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="RemarkFinish" class="form-label">Remark Finish</label>
+                                        <textarea type="text" id="RemarkFinish" name="RemarkFinish" class="form-control">{{ old('RemarkFinish', $data->RemarkFinish) }}</textarea>
+                                    </div>
+                                    <div class="card-footer d-flex justify-content-between px-0">
+                                        <div>
+                                            <small class="text-secondary" style="white-space: pre-line;"
+                                                id="infoactualfinish"></small>
+                                        </div>
+                                        <div class="d-flex gap-4">
+
+                                            @if ($data->ActivityStatus == 1)
+                                                <button type="submit" data-action="update" class="btn btn-primary"><i
+                                                        class="icon-base bx bx-save icon-sm me-1"></i>
+                                                    Update Actual Finish</button>
+                                            @endif
+
+                                            @if ($data->ActivityStatus == 2)
+                                                <button type="submit" data-action="cancel" class="btn btn-danger"><i
+                                                        class="icon-base bx bx-x icon-sm me-1"></i>
+                                                    Cancel Actual Finish</button>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="navs-tab-upload" role="tabpanel">
+                            <form id="form-upload" action="{{ route('page.workshop.uploadImage', $data->id) }}"
+                                method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <div class="d-flex gap-2 mb-3">
+                                    <input type="file" class="form-control" id="images" name="images[]"
+                                        accept="image/*" multiple required>
+                                    <button type="submit" class="btn btn-primary"><i
+                                            class="icon-base bx bx-images icon-sm me-1"></i> Upload</button>
                                 </div>
                             </form>
+                            <div class="bg-lighter rounded p-4 position-relative mb-2">
+                                @if ($images->isEmpty())
+                                    <div class="bg-lighter rounded p-4 position-relative mb-2">
+                                        <p class="text-center">No images uploaded for this workshop.</p>
+                                    </div>
+                                @endif
+                                <div class="row">
+                                    @foreach ($images as $imagesdata)
+                                        <div class="col-4 col-md-2 mb-4">
+                                            <div class="bg-light rounded overflow-hidden"
+                                                style="aspect-ratio: 1/1; cursor: pointer;">
+                                                <img src="{{ asset('storage/workshop/' . $imagesdata->filename) }}"
+                                                    alt="Workshop Image" class="img-fluid gallery-image"
+                                                    style="width: 100%; height: 100%; object-fit: cover;"
+                                                    data-src="{{ asset('storage/workshop/' . $imagesdata->filename) }}">
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+
+                                {{-- Popup overlay --}}
+                                <div id="imagePopup" class="popup-overlay d-none">
+                                    <span class="popup-close">&times;</span>
+                                    <img class="popup-content" id="popupImage" src="">
+                                </div>
+
+                            </div>
                         </div>
                         <div class="tab-pane fade" id="navs-tab-progress" role="tabpanel">
                             <form id="form-add-progress" action="{{ route('page.workshop.storeProgress', $data->id) }}"
@@ -223,43 +269,43 @@
                                     </div>
                                 </div>
                             </form>
-                            <table class="table table-sm table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Percent</th>
-                                        <th>Note</th>
-                                        <th>Delete</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                                @foreach ($progress as $progressdata)
-                                    <tr>
-                                        <td style="width: 10%">
-                                            {{ \Carbon\Carbon::parse($progressdata->ProgressDate)->format('d-M-y') }}</td>
-                                        <td class="text-center" style="width: 10%">{{ $progressdata->ProgressPercent }} %
-                                        </td>
-                                        <td style="width: 75%">{{ $progressdata->ProgressNote }}</td>
-                                        <td style="width: 5%">
-                                            @if (!in_array($progressdata->ProgressPercent, [0, 100]))
-                                                <form class="form-delete-progress"
-                                                    action="{{ route('page.workshop.destroyProgress', $progressdata->id) }}"
-                                                    method="POST" style="display:inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger"
-                                                        title="Delete Progress"><i
-                                                            class="icon-base bx bx-trash icon-sm"></i></button>
-                                            @endif
-                                        </td>
+                            <div class="bg-lighter rounded p-4 position-relative">
+                                <table class="table table-sm table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Percent</th>
+                                            <th>Note</th>
+                                            <th>Delete</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                    @foreach ($progress as $progressdata)
+                                        <tr>
+                                            <td style="width: 10%">
+                                                {{ \Carbon\Carbon::parse($progressdata->ProgressDate)->format('d-M-y') }}
+                                            </td>
+                                            <td class="text-center" style="width: 10%">
+                                                {{ $progressdata->ProgressPercent }} %
+                                            </td>
+                                            <td style="width: 75%">{{ $progressdata->ProgressNote }}</td>
+                                            <td style="width: 5%">
+                                                @if (!in_array($progressdata->ProgressPercent, [0, 100]))
+                                                    <form class="form-delete-progress"
+                                                        action="{{ route('page.workshop.destroyProgress', $progressdata->id) }}"
+                                                        method="POST" style="display:inline;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-sm btn-danger"
+                                                            title="Delete Progress"><i
+                                                                class="icon-base bx bx-trash icon-sm"></i></button>
+                                                @endif
+                                            </td>
 
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                            <div class="card-footer d-flex justify-content-end px-0">
-                                <a href="{{ route('page.workshop.index') }}" class="btn btn-dark"><i
-                                        class="icon-base bx bx-arrow-back icon-sm me-1"></i> Back to list</a>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="navs-tab-planninginfo" role="tabpanel">
@@ -365,12 +411,12 @@
                                     </table>
                                 </div>
                             </div>
-                            <div class="card-footer d-flex justify-content-end px-0">
-                                <a href="{{ route('page.workshop.index') }}" class="btn btn-dark"><i
-                                        class="icon-base bx bx-arrow-back icon-sm me-1"></i> Back to list</a>
-                            </div>
                         </div>
                     </div>
+                </div>
+                <div class="card-footer d-flex justify-content-end">
+                    <a href="{{ route('page.workshop.index') }}" class="btn btn-dark"><i
+                            class="icon-base bx bx-arrow-back icon-sm me-1"></i> Back to list</a>
                 </div>
             </div>
 
@@ -566,6 +612,25 @@
                 });
             });
 
+            const formUpload = document.getElementById('form-upload');
+            formUpload.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                Swal.fire({
+                    title: 'Upload image data?',
+                    text: "Image will be uploaded to the system",
+                    icon: 'question',
+                    theme: 'dark',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, Upload image!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        formUpload.submit();
+                    }
+                });
+            });
+
             document.querySelectorAll('.form-delete-progress').forEach(function(form) {
                 form.addEventListener('submit', function(e) {
                     e.preventDefault();
@@ -585,6 +650,33 @@
                     });
 
                 });
+            });
+
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('.gallery-image');
+            const popup = document.getElementById('imagePopup');
+            const popupImg = document.getElementById('popupImage');
+            const popupClose = document.querySelector('.popup-close');
+
+            images.forEach(img => {
+                img.addEventListener('click', function() {
+                    popupImg.src = this.dataset.src;
+                    popup.classList.remove('d-none');
+                });
+            });
+
+            popupClose.addEventListener('click', function() {
+                popup.classList.add('d-none');
+                popupImg.src = '';
+            });
+
+            popup.addEventListener('click', function(e) {
+                if (e.target === popup) {
+                    popup.classList.add('d-none');
+                    popupImg.src = '';
+                }
             });
         });
     </script>

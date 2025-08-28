@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Helpers\LogHelper;
 use App\Models\ProgressActivity;
+use App\Models\ImageActivity;
 use Carbon\Carbon;
 
 class ReportController extends Controller
@@ -78,5 +79,13 @@ class ReportController extends Controller
 
         LOG::info($data);
         return view('page.report.allactivity.index', compact('data', 'statusCounts'));
+    }
+    public function view(string $id)
+    {
+
+        $data = Activity::findOrFail($id);
+        $progress = ProgressActivity::where('Activity_Id', $id)->orderBy('ProgressPercent', 'asc')->get();
+        $images = ImageActivity::where('Activity_Id', $id)->get();
+        return view('page.report.allactivity.view', compact('data', 'progress', 'images'));
     }
 }

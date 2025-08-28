@@ -11,7 +11,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Helpers\LogHelper;
 use App\Models\ProgressActivity;
+use App\Models\ImageActivity;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class WorkshopController extends Controller
 {
@@ -26,7 +29,6 @@ class WorkshopController extends Controller
             $counts = Activity::select('ActivityStatus', DB::raw('count(*) as total'))
                 ->groupBy('ActivityStatus')
                 ->pluck('total', 'ActivityStatus');
-
         } else {
             $data = Activity::with(['department', 'wo_number'])
                 ->where('department_id', $deptAuth)
@@ -36,7 +38,6 @@ class WorkshopController extends Controller
                 ->where('department_id', $deptAuth)
                 ->groupBy('ActivityStatus')
                 ->pluck('total', 'ActivityStatus');
-
         }
 
         $statusCounts = [
@@ -68,8 +69,8 @@ class WorkshopController extends Controller
 
         $data = Activity::findOrFail($id);
         $progress = ProgressActivity::where('Activity_Id', $id)->orderBy('ProgressPercent', 'asc')->get();
-
-        return view('page.workshop.edit', compact('data', 'progress'));
+        $images = ImageActivity::where('Activity_Id', $id)->get();
+        return view('page.workshop.edit', compact('data', 'progress', 'images'));
     }
 
     public function update(Request $request, string $id)
@@ -227,6 +228,45 @@ class WorkshopController extends Controller
             LogHelper::record('error', 'delete', 'Progressactivity', $id, $e->getMessage(), ['id' => $id]);
             return redirect()->route('page.workshop.index')
                 ->with('error', 'An error occurred while deleting planning data, ' . $e->getMessage());
+        }
+    }
+
+    public function uploadImage(Request $request, string $id)
+    {
+
+        try {
+
+            $request->validate([
+                'images.*' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
+            ]);
+
+            $uploadPath = 'workshop';
+
+            if (!Storage::disk('public')->exists($uploadPath)) {
+                Storage::disk('public')->makeDirectory($uploadPath);
+            }
+
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $file) {
+                    $filename = time() . '-' . uniqid() . '.' . $file->getClientOriginalExtension();
+
+                    $file->storeAs($uploadPath, $filename, 'public');
+
+                    $imageactivity = ImageActivity::create([
+                        'Activity_Id' => $id,
+                        'Filename'    => $filename,
+                    ]);
+                }
+            }
+
+            LogHelper::record('success', 'upload', 'Workshop', $imageactivity->id, 'Workshop image uploaded successfully.');
+            return redirect()->route('page.workshop.index')->with('success', 'Workshop image uploaded successfully.');
+        } catch (\Exception $e) {
+            Log::error('Gagal upload image: ' . $e->getMessage());
+            $errorMessage = 'An error occurred while uploading image data, please contact the administrator to see the logs.';
+
+            LogHelper::record('error', 'upload', 'Workshop', null, $e->getMessage(), $request->except('_token'));
+            return redirect()->back()->withInput()->with('error', $errorMessage);
         }
     }
 }

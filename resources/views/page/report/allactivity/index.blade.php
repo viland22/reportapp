@@ -14,6 +14,7 @@
             <table class="table table-sm table-striped table-hover table-responsive text-sm" style="font-size: small">
                 <thead>
                     <tr>
+                        <th></th>
                         <th style="font-size: smaller; font-weight:bold">Activity Id</th>
                         <th style="font-size: smaller; font-weight:bold">Activity Name</th>
                         <th style="font-size: smaller; font-weight:bold">Wo Number</th>
@@ -35,7 +36,11 @@
                 <tbody>
                     @foreach ($data as $index => $planning)
                         <tr>
-
+                            <td>
+                                <a href="{{ route('page.report.allactivity.view', $planning->id) }}"
+                                    class="btn btn-sm btn-outline-secondary" title="View Activity"><i
+                                        class="icon-base bx bx-show icon-sm"></i></a>
+                            </td>
                             <td>{{ $planning->ActivityId }}</td>
                             <td>{{ $planning->ActivityName }}</td>
                             <td>{{ $planning->wo_number->wo_number ?? '-' }}</td>
@@ -78,13 +83,19 @@
                         [10, 25, 50, "All"]
                     ],
                     order: [
-                        [0, "desc"],
+                        [1, "desc"],
                     ],
+                    columnDefs: [{
+                        targets: 0,
+                        title: "View",
+                        searchable: !1,
+                        orderable: !1,
+                    }],
                     //dom: '<"row mx-1"<"col-12 col-md-6 d-flex align-items-center justify-content-center justify-content-md-start gap-3"l<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start mt-md-0 mt-3"B>><"col-12 col-md-6 d-flex align-items-center justify-content-end flex-column flex-md-row pe-3 gap-md-3"f<"logtipe mb-3 mb-md-0">>>t<"row mx-2"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
                     dom: '<"row mx-1"' +
-                        '<"col-12 col-md-6 d-flex align-items-center justify-content-md-start gap-3"l>' +
-                        '<"col-12 col-md-6 d-flex align-items-center justify-content-end flex-column flex-md-row pe-3 gap-md-3"' +
-                        'f<"logtipe mb-3 mb-md-0">B' +
+                        '<"col-12 col-md-4 d-flex align-items-center justify-content-md-start gap-3"l>' +
+                        '<"col-12 col-md-8 d-flex align-items-center justify-content-end flex-column flex-md-row pe-3 gap-md-3"' +
+                        'f<"wono mb-3 mb-md-0"><"department mb-3 mb-md-0"><"logtipe mb-3 mb-md-0">B' +
                         '>' +
                         '>t' +
                         '<"row mx-2"' +
@@ -107,19 +118,45 @@
                         }
                     }],
                     initComplete: function() {
-                        this.api().columns(4).every(function() {
-                            var e = this,
-                                t = $(
-                                    '<select class="form-select form-select-sm"><option value=""> Status </option></select>'
-                                ).appendTo(".logtipe").on("change", function() {
-                                    var a = $.fn.dataTable.util.escapeRegex($(this).val());
-                                    e.search(a ? "^" + a + "$" : "", !0, !1).draw()
+                        const api = this.api();
+
+                        // daftar konfigurasi: [index_kolom, target_class, label_placeholder]
+                        const filters = [{
+                                col: 3,
+                                target: ".wono",
+                                label: "Wo Number"
+                            },
+                            {
+                                col: 4,
+                                target: ".department",
+                                label: "Department"
+                            },
+                            {
+                                col: 5,
+                                target: ".logtipe",
+                                label: "Status"
+                            }
+                        ];
+
+                        filters.forEach(f => {
+                            const column = api.column(f.col);
+
+                            // buat select element
+                            const select = $(
+                                    '<select class="form-select form-select-sm"><option value="">' + f
+                                    .label + '</option></select>')
+                                .appendTo(f.target)
+                                .on("change", function() {
+                                    const val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                    column.search(val ? "^" + val + "$" : "", true, false).draw();
                                 });
-                            e.data().unique().sort().each(function(a, e) {
-                                t.append('<option value="' + a + '" class="text-capitalize">' +
-                                    a + "</option>")
-                            })
-                        })
+
+                            // isi option berdasarkan data unik
+                            column.data().unique().sort().each(function(d) {
+                                select.append('<option value="' + d +
+                                    '" class="text-capitalize">' + d + "</option>");
+                            });
+                        });
                     }
                 })),
                 e.on("draw.dt", function() {

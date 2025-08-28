@@ -25,6 +25,7 @@ class DashboardController extends Controller
             $progress = ProgressActivity::from('progressactivity as a')
                 ->leftJoin('activity as b', 'a.Activity_Id', '=', 'b.id')
                 ->leftJoin('wo_numbers as c', 'b.wo_number_id', '=', 'c.id')
+                ->where('b.ActivityStatus', '<', 2)
                 ->whereRaw('a.ProgressPercent = (
                     SELECT MAX(p.ProgressPercent)
                     FROM progressactivity p
@@ -51,6 +52,7 @@ class DashboardController extends Controller
                 ->leftJoin('activity as b', 'a.Activity_Id', '=', 'b.id')
                 ->leftJoin('wo_numbers as c', 'b.wo_number_id', '=', 'c.id')
                 ->where('b.department_id', $deptAuth)
+                ->where('b.ActivityStatus', '<', 2)
                 ->whereRaw('a.ProgressPercent = (
                     SELECT MAX(p.ProgressPercent)
                     FROM progressactivity p
