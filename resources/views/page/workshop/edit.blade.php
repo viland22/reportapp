@@ -227,10 +227,10 @@
                                         <div class="col-4 col-md-2 mb-4">
                                             <div class="bg-light rounded overflow-hidden"
                                                 style="aspect-ratio: 1/1; cursor: pointer;">
-                                                <img src="{{ asset('storage/workshop/' . $imagesdata->filename) }}"
+                                                <img src="{{ asset('storage/workshop/' . $imagesdata->Filename) }}"
                                                     alt="Workshop Image" class="img-fluid gallery-image"
                                                     style="width: 100%; height: 100%; object-fit: cover;"
-                                                    data-src="{{ asset('storage/workshop/' . $imagesdata->filename) }}">
+                                                    data-src="{{ asset('storage/workshop/' . $imagesdata->Filename) }}">
                                             </div>
                                         </div>
                                     @endforeach
